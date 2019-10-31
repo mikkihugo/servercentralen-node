@@ -1,0 +1,27 @@
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
+const _ = require('lodash');
+
+const { User } = require('../models');
+
+const sessionMiddleware = async (req, res, next) => {
+  if (req.headers && req.headers.authorization) {
+    const auth = req.headers.authorization.split(' ');
+    const decoded = jwt.verify(auth[1], process.env.JWT_SECRET);
+    const { email } = decoded;
+    const user = email && await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    await user.update({
+      lastLogin: new Date(),
+    });
+
+    req.user = user && _.omit(user.toJSON(), 'password');
+  }
+  next();
+};
+
+module.exports = sessionMiddleware;
