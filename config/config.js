@@ -39,6 +39,7 @@ const config = {
     acquire: 60000,
     evict: 10000,
   },
+  // eslint-disable-next-line no-console
   logging: process.env.DB_LOGGING === 'true' ? console.log : undefined,
   freezeTableName: true, // By default, sequelize will pluralize model names
   timestamps: true,

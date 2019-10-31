@@ -7,6 +7,6 @@ module.exports = {
   USER_ROLES: [
     'manager',
     'admin',
-    'user'
+    'user',
   ],
 };

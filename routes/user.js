@@ -19,6 +19,6 @@ const initializeUserEndpoints = (app) => {
       return next(err);
     }
   });
-}
+};
 
-module.exports = initializeUserEndpoints
+module.exports = initializeUserEndpoints;

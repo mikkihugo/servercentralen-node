@@ -1,4 +1,4 @@
-const service = require('../services')
+const service = require('../services');
 
 const initializeStokabEndpoints = (app) => {
   // app.options('/api/getByAddress', function(req, res) {
@@ -8,14 +8,17 @@ const initializeStokabEndpoints = (app) => {
   //   res.send()
   // })
 
-  app.get('/api/getByAddress', async(req, res, next) => {
-    const response = await service.fetchAddresses(encodeURIComponent(req.query.city), encodeURIComponent(req.query.street), encodeURIComponent(req.query.number))
+  app.get('/api/getByAddress', async (req, res, next) => {
+    const response = await service.fetchAddresses(
+      encodeURIComponent(req.query.city),
+      encodeURIComponent(req.query.street),
+      encodeURIComponent(req.query.number),
+    );
     if (response.status) {
-      return next(response)
-    } else {
-      return res.json(response)
+      return next(response);
     }
-  })
-}
+    return res.json(response);
+  });
+};
 
-module.exports = initializeStokabEndpoints
+module.exports = initializeStokabEndpoints;

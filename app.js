@@ -1,13 +1,13 @@
 require('dotenv').config();
-const express = require("express");
+const express = require('express');
 const session = require('express-session');
-const path = require("path");
-const bodyParser = require("body-parser");
+const path = require('path');
+const bodyParser = require('body-parser');
 
-const endpoints = require("./routes");
-const service = require("./services");
+const endpoints = require('./routes');
+const service = require('./services');
 const helper = require('./helper');
-const errorHandler = require("./helper/error-handler");
+const errorHandler = require('./helper/error-handler');
 const jwt = require('./helper/jwt');
 const sessionMiddleware = require('./helper/session-middleware');
 
@@ -43,10 +43,10 @@ app.use(session({
 // use JWT auth to secure the api
 app.use(['/api'], jwt(), sessionMiddleware);
 
-app.use(express.static(path.join(__dirname, "./dist")));
-app.use("/", express.static(__dirname + "./"));
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "./dist/index.html"));
+app.use(express.static(path.join(__dirname, './dist')));
+app.use('/', express.static(`${__dirname}./`));
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './dist/index.html'));
 });
 
 // define endpoints
@@ -57,5 +57,6 @@ app.use(errorHandler);
 service.getToken();
 
 app.listen(8080, () => {
-  console.log("Connected & Listen to port 8080");
+  // eslint-disable-next-line no-console
+  console.log('Connected & Listen to port 8080');
 });

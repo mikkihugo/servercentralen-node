@@ -30,9 +30,7 @@ module.exports = {
     const saltRounds = 10;
     return bcrypt.hash(password, saltRounds, null);
   },
-  comparePassword: async (password, hashedPassword) => {
-    return bcrypt.compare(password, hashedPassword);
-  },
+  comparePassword: async (password, hashedPassword) => bcrypt.compare(password, hashedPassword),
   validateAdminRole: (role) => {
     if (!role || !['admin'].includes(role.toLowerCase())) {
       throw new InputError('invalid permission');

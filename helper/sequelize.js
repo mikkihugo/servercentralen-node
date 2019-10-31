@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Umzug = require('umzug');
 const path = require('path');
 

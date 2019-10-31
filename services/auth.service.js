@@ -1,14 +1,11 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
-const Sequelize = require('sequelize');
 
 const InputError = require('../helper/input-error');
 const constants = require('../constants');
 const helper = require('../helper');
 const { User } = require('../models');
-
-const { Op } = Sequelize;
 
 const getToken = (payload) => jwt.sign(payload, process.env.JWT_SECRET);
 
@@ -17,7 +14,7 @@ module.exports = {
     const user = await User.findOne({
       where: {
         email,
-      }
+      },
     });
 
     if (user) {
@@ -35,7 +32,7 @@ module.exports = {
 
   register: async (req) => {
     const {
-      firstName, lastName, email, password, role = 'customer'
+      firstName, lastName, email, password, role = 'customer',
     } = req.body;
 
     if (!firstName || !lastName || !email || !password) {
@@ -67,4 +64,4 @@ module.exports = {
       token,
     };
   },
-}
+};
