@@ -13,11 +13,8 @@ const initializeUserEndpoints = (app) => {
   app.post('/api/auth', async (req, res, next) => {
     try {
       const { email, password } = req.body;
-      // const response = await authService.auth({ email, password });
-      return res.json({
-        email,
-        password
-      });
+      const response = await authService.auth({ email, password });
+      return res.json(response);
     } catch (err) {
       return next(err);
     }
