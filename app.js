@@ -5,7 +5,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 
 const endpoints = require("./routes");
-const service = require("./service");
+const service = require("./services");
 const helper = require('./helper');
 const errorHandler = require("./helper/error-handler");
 const jwt = require('./helper/jwt');
