@@ -7,7 +7,7 @@ const InputError = require('./input-error');
 module.exports = {
   cors: corsRequestHandler({
     origin: constants.CORS_WHITE_LIST,
-    // methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: [
       'Content-Type',

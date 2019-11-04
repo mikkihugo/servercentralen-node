@@ -27,7 +27,7 @@ module.exports = {
         };
       }
     }
-    throw new InputError('invalid email or password');
+    throw new InputError('Invalid email or password');
   },
 
   register: async (req) => {
@@ -36,11 +36,11 @@ module.exports = {
     } = req.body;
 
     if (!firstName || !lastName || !email || !password) {
-      throw new InputError('invalid request');
+      throw new InputError('Invalid request');
     }
 
     if (!role || !constants.USER_ROLES.includes(role)) {
-      throw new InputError('invalid role');
+      throw new InputError('Invalid role');
     }
 
     const existingUser = await User.findOne({
@@ -50,7 +50,7 @@ module.exports = {
     });
 
     if (existingUser) {
-      throw new InputError('email is already exist');
+      throw new InputError('Email is already exist');
     }
 
     const newUser = await User.create({
