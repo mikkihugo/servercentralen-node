@@ -48,6 +48,9 @@ app.use('/', express.static(`${__dirname}./`));
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, './dist/index.html'));
 });
+app.get('/**', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './dist/index.html'));
+});
 
 // define endpoints
 endpoints(app);
