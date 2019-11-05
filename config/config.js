@@ -28,7 +28,7 @@ const config = {
   operatorsAliases,
   charset: 'utf8',
   collate: 'utf8_general_ci',
-  dialect: 'mariadb',
+  dialect: 'mysql',
   dialectOptions: {
     decimalNumbers: true,
   },
