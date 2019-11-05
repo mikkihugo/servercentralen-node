@@ -78,6 +78,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null,
     },
   }, {
+    tableName: 'users',
     hooks: {
       beforeCreate: beforeSaveHook,
       beforeUpdate: beforeSaveHook,
