@@ -52,7 +52,7 @@ module.exports = {
   getToken: async () => {
     // await createToken()
     // eslint-disable-next-line max-len
-    token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2QTFCNEExNTYwMTQyQUU5OTRCOTNBRjE1NUFGMjUxNjQ5MzUyMUUiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJocUcwb1ZZQlFxNlpTNU92RlZyeVVXU1RVaDQifQ.eyJuYmYiOjE1NzE3MTMyODUsImV4cCI6MTU3MTczMDA4NSwiaXNzIjoiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UiLCJhdWQiOlsiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UvcmVzb3VyY2VzIiwiU3Rva2FiX2FwaSJdLCJjbGllbnRfaWQiOiJOU0MiLCJBY2NvdW50VXNlcklkIjoiNTU2NzY3LTY0NzIiLCJzY29wZSI6WyJTdG9rYWJfYXBpLmFjY2Vzc2xldmVsMyIsIlN0b2thYl9hcGkuYXV0aG9yaXR5Il19.SIxWBiRUiz4GeJECSlBMAY1lEuHiPvFtGIgSW6GfDxD5WlUxsbYzqOWb2kqr2E3XpXPiqMQ8aARCSlvZ4fdvCDd6IAH59z-wl7lWIHZoBIIdeFfH7Qup8CSNpD_rz9L5JPlPYkmrNmLcQGAX3kBqUqigjC8gym6o-HWd97tdAie-EHzU8BjITmfPU-DrzDlx57-VjfAvJITAYkvXcG-GDCL0EwMBgAjwtxqhUNVeZIaiRgi5zgYcFHmClprPp0mx_ea92WY-k3--7e0e2ME4IG4VeTrkgKwninjzdbrbp1wexz1hQuB5yrxGo_Jzm2RQOnuxzkoc3mxl-h4PqjbJYeBGbL7kF-vuMimfh603SvGH484IPnY7aAMz-GOxl26j0rR7ynEiC12VViI-ukI-IZiJ6xv4UN4KCrlK5DYXK1BMQGQANsLCK8VPON0iCns6FfV8uA0ApVXSXarYaEU_HQT8esVBIc-PDKxAompZ8404cV9rW5Sr8z7ymNO0NKgo_qin1I_xil093e4chPjDry0JJm-8Ij_HlOj8-nSsbrelM8IUPXbjVNmXoeDZnlMnRQz2My5FhQW5VSjU-31R5A3QrxRvg_3IwwxK1VqHPq_KGiZLiyNiEqPyx0jSzZQI-msMdg5LVxg94VAFe6pYn4wm7eJbspdshdoiHuDfqF0';
+    token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2QTFCNEExNTYwMTQyQUU5OTRCOTNBRjE1NUFGMjUxNjQ5MzUyMUUiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJocUcwb1ZZQlFxNlpTNU92RlZyeVVXU1RVaDQifQ.eyJuYmYiOjE1NzI4ODk3MzIsImV4cCI6MTU3MjkwNjUzMiwiaXNzIjoiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UiLCJhdWQiOlsiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UvcmVzb3VyY2VzIiwiU3Rva2FiX2FwaSJdLCJjbGllbnRfaWQiOiJOU0MiLCJBY2NvdW50VXNlcklkIjoiNTU2NzY3LTY0NzIiLCJzY29wZSI6WyJTdG9rYWJfYXBpLmFjY2Vzc2xldmVsMyIsIlN0b2thYl9hcGkuYXV0aG9yaXR5Il19.ZHl_K9fxmAyaX0Kc3xHT-INO3mlgtIrnoUbCHjwxZ7DqU1hD6KfxIcloRgdeDmfMmX0cg4IboXr_8c2NqUL-qEhYH3MnbuD6TN0nsFKoRvhwoyS5BGMWgV9gdwaySv1FiEOUYeIUDBCGOU6zzfRZbXC96zayj9iqk-VbN--EN-8RITEfbRrdkC4IYAqnLLfpc7dZd1NGxsod5nRz1y-3Bq56mdZGdTthJRYyJTishpfn6nPsoQfRampTKM8Rex5dazpOjn-lKB3rVSHjmSBHFdIGA14fca0bocLbgGjsVbxoioUnOBMju5RONt_99xRMBHTjP7i7iQL2ZucmQYkmzF4BPVYJPzeTthIga_RIQiWkPLeMRG1fiwLNqHR7KEpLMBbX9z0oVfwpKmRULEtZZB7BqVUNJ8VhG9Wz9OrodNhX81b8GdK5ZIRH1aGHVuiOnOVI_cDuyZMVIi9FmBtsecXivb9Li1joCnU2tcOzfa2b8YNhCivBNXfO-MqtO2L2PxeYjL-I_9JhI2F2byCho3p6JZ_3RZxGXmvsjOXheMPgjPlMFina03yWZMP_gBR_5rfHuPVHLZS8MAPFIO3CiFCpyll-VDH10c7FVTl3rkGw6-YwcyI5riFij5JZbf7zt1caclGRsGtu4N0VA_AUEfND-H0FIENuDKRZhy1bllI';
   },
 
   fetchAddresses: async (city, street, number) => {
@@ -60,7 +60,7 @@ module.exports = {
       const response = await fetchAddresses(city, street, number);
       return response;
     } catch (error) {
-      if (error.response.status === 401) {
+      if (error && error.response && error.response.status === 401) {
         await createToken();
         console.log('Token is re-created successfully');
         const response = await fetchAddresses(city, street, number);

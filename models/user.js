@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.DATE,
       defaultValue: null,
-    }
+    },
   }, {
     hooks: {
       beforeCreate: beforeSaveHook,
