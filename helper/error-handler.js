@@ -15,8 +15,10 @@ const errorHandler = (err, req, res, next) => {
       message: err.response.statusText,
     });
   }
+  console.log(err);
   return res.status(500).json({
-    error: err,
+    status: 500,
+    message: 'Service is unavailable',
   });
 };
 
