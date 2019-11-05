@@ -8,10 +8,10 @@ const sessionMiddleware = async (req, res, next) => {
   if (req.headers && req.headers.authorization) {
     const auth = req.headers.authorization.split(' ');
     const decoded = jwt.verify(auth[1], process.env.JWT_SECRET);
-    const { email } = decoded;
-    const user = email && await User.findOne({
+    const { id } = decoded;
+    const user = id && await User.findOne({
       where: {
-        email,
+        id,
       },
     });
 
