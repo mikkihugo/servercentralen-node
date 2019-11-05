@@ -18,6 +18,7 @@ const initializeUserEndpoints = (app) => {
       const response = await authService.auth({ email, password });
       return res.json(response);
     } catch (err) {
+      console.log(err);
       return next(err);
     }
   });
