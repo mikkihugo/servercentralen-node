@@ -1,5 +1,6 @@
 const helper = require('../helper');
 
+// eslint-disable-next-line no-unused-vars
 const beforeSaveHook = async (user, options) => {
   if (user.password && user.changed('password')) {
     // eslint-disable-next-line no-param-reassign
