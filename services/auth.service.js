@@ -14,7 +14,7 @@ const getToken = (payload) => jwt.sign(payload, process.env.JWT_SECRET);
 
 const serializeUpdatedData = (rawData) => {
   const inputFields = [
-    'firstName', 'lastName', 'email',
+    'firstName', 'lastName', 'email', 'streetAddress', 'city', 'country', 'postalCode', 'aboutMe',
   ];
   const updatedFields = {};
 

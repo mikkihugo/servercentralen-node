@@ -52,6 +52,31 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: null,
     },
+    streetAddress: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: null,
+    },
+    city: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: null,
+    },
+    country: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: null,
+    },
+    postalCode: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: null,
+    },
+    aboutMe: {
+      allowNull: true,
+      type: DataTypes.TEXT,
+      defaultValue: null,
+    },
   }, {
     hooks: {
       beforeCreate: beforeSaveHook,
