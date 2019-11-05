@@ -43,14 +43,17 @@ app.use(session({
 // use JWT auth to secure the api
 app.use(['/api'], jwt(), sessionMiddleware);
 
+// define endpoints
+endpoints(app);
+
 app.use(express.static(path.join(__dirname, './dist')));
 app.use('/', express.static(`${__dirname}./`));
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, './dist/index.html'));
 });
-
-// define endpoints
-endpoints(app);
+app.get('/**', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './dist/index.html'));
+});
 
 // global error handler
 app.use(errorHandler);
