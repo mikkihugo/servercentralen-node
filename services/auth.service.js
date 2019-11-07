@@ -2,15 +2,23 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const Sequelize = require('sequelize');
+const crypto = require('crypto');
+const util = require('util');
 
 const InputError = require('../helper/input-error');
+const SendGridEmail = require('../helper/sendGridEmail');
 const constants = require('../constants');
 const helper = require('../helper');
 const { User } = require('../models');
 
 const { Op } = Sequelize;
 
+const PSW_RESET_TOKEN_VALID_FOR = 3; // hours
+const ONE_HOUR = 3600000;
+
 const getToken = (payload) => jwt.sign(payload, process.env.JWT_SECRET);
+
+const cryptoRandomBytes = util.promisify(crypto.randomBytes);
 
 const serializeUpdatedData = (rawData) => {
   const inputFields = [
@@ -25,6 +33,11 @@ const serializeUpdatedData = (rawData) => {
   });
 
   return updatedFields;
+};
+
+const createResetPswToken = async () => {
+  const tokenBuffer = await cryptoRandomBytes(24);
+  return tokenBuffer;
 };
 
 module.exports = {
@@ -124,5 +137,42 @@ module.exports = {
     return {
       ..._.omit(user.toJSON(), 'password'),
     };
+  },
+
+  sendResetEmail: async (req) => {
+    const {
+      email,
+    } = req.body;
+
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (user) {
+      try {
+        const resetPasswordToken = await createResetPswToken();
+        user.resetPasswordToken = resetPasswordToken.toString('hex');
+        user.resetPasswordExpires = new Date(Date.now() + (PSW_RESET_TOKEN_VALID_FOR * ONE_HOUR));
+
+        await user.save();
+
+        await SendGridEmail.sendResetPasswordLink({
+          email,
+          name: user.firstName,
+          link: req.headers.host,
+          token: user.resetPasswordToken,
+        });
+
+        return {
+          message: 'Sent email correctly',
+        };
+      } catch (err) {
+        console.log(err);
+        throw new InputError('Email Issue');
+      }
+    }
+    throw new InputError('The email is not exist.');
   },
 };

@@ -39,5 +39,5 @@ module.exports = {
     await queryInterface.removeColumn('users', 'country');
     await queryInterface.removeColumn('users', 'postalCode');
     await queryInterface.removeColumn('users', 'aboutMe');
-  }
+  },
 };

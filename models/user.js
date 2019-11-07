@@ -77,6 +77,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       defaultValue: null,
     },
+    resetPasswordToken: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: null,
+    },
+    resetPasswordExpires: {
+      allowNull: true,
+      type: DataTypes.DATE,
+      defaultValue: null,
+    },
   }, {
     tableName: 'users',
     hooks: {

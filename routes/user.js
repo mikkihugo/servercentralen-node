@@ -32,6 +32,16 @@ const initializeUserEndpoints = (app) => {
       return next(err);
     }
   });
+
+  app.post('/api/forget_password', async (req, res, next) => {
+    console.log('/api/forget_password');
+    try {
+      const response = await authService.sendResetEmail(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
 
 module.exports = initializeUserEndpoints;

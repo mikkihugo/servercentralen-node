@@ -6,6 +6,7 @@ const jwt = () => expressJwt({ secret: process.env.JWT_SECRET }).unless({
     // public routes that don't require authentication
     '/api/auth',
     '/api/register',
+    '/api/forget_password',
   ],
 });
 
