@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');

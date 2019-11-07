@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const authService = require('../services/auth.service');
 
 const initializeUserEndpoints = (app) => {

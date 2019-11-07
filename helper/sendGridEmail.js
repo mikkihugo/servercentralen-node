@@ -7,7 +7,9 @@ sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
 const sendGridEmail = (msg) => sgMail.send(msg);
 
 module.exports = {
-  sendResetPasswordLink: async ({ email, name, link, token }) => {
+  sendResetPasswordLink: async ({
+    email, name, link, token,
+  }) => {
     const emailTemplate = `
       Dear, ${name}, <br /><br />
 
