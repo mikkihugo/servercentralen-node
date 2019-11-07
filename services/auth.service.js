@@ -14,7 +14,7 @@ const { User } = require('../models');
 
 const { Op } = Sequelize;
 
-const PSW_RESET_TOKEN_VALID_FOR = 3; // hours
+const PSW_RESET_TOKEN_VALID_FOR = 0.5; // 30 mins
 const ONE_HOUR = 3600000;
 
 const getToken = (payload) => jwt.sign(payload, process.env.JWT_SECRET);
@@ -175,5 +175,35 @@ module.exports = {
       }
     }
     throw new InputError('The email is not exist.');
+  },
+
+  resetPassword: async (req) => {
+    const {
+      password, token,
+    } = req.body;
+
+    const user = await User.findOne({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: new Date() },
+      },
+    });
+
+    if (user) {
+      try {
+        user.resetPasswordToken = null;
+        user.resetPasswordExpires = null;
+        user.password = password;
+
+        await user.save();
+
+        return {
+          message: 'Password is set successfully.',
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    throw new InputError('Invalid reset token.');
   },
 };

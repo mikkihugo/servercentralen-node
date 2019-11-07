@@ -7,6 +7,7 @@ const jwt = () => expressJwt({ secret: process.env.JWT_SECRET }).unless({
     '/api/auth',
     '/api/register',
     '/api/forget_password',
+    '/api/reset_password',
   ],
 });
 
