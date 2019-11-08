@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const util = require('util');
 
 const InputError = require('../helper/input-error');
-const SendGridEmail = require('../helper/sendGridEmail');
+const mailProvider = require('../helper/mailProvider');
 const constants = require('../constants');
 const helper = require('../helper');
 const { User } = require('../models');
@@ -159,7 +159,7 @@ module.exports = {
 
         await user.save();
 
-        await SendGridEmail.sendResetPasswordLink({
+        await mailProvider.sendResetPasswordLink({
           email,
           name: user.firstName,
           link: req.headers.host,

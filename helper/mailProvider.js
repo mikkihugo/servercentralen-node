@@ -1,10 +1,13 @@
 /* eslint-disable max-len */
 require('dotenv').config();
-const sgMail = require('@sendgrid/mail');
+// const sgMail = require('@sendgrid/mail');
+const domain = 'Mg.servercentralen.net';
 
-sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
+const mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API_KEY, domain });
 
-const sendGridEmail = (msg) => sgMail.send(msg);
+// sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
+
+// const sendGridEmail = (msg) => sgMail.send(msg);
 
 module.exports = {
   sendResetPasswordLink: async ({
@@ -21,18 +24,12 @@ module.exports = {
     `;
 
     const emailContent = {
-      from: 'ServerCentralen<technical@support.com>',
+      from: 'ServerCentralen<technical@servercentralen.com>',
       to: email,
       subject: 'Reset Password',
-      content: [
-        {
-          type: 'text/html',
-          value: emailTemplate,
-        },
-      ],
+      html: emailTemplate,
     };
 
-    const response = await sendGridEmail(emailContent);
-    return response;
+    await mailgun.messages().send(emailContent);
   },
 };
