@@ -111,6 +111,8 @@ module.exports = {
       func: '/api/register',
       user: newUser,
     });
+    mailProvider.sendWelcomeEmail({ name: newUser.firstName, email: newUser.email });
+
     return {
       user: _.omit(newUser.toJSON(), 'password'),
       token,
@@ -206,10 +208,12 @@ module.exports = {
           link: req.headers.host,
           token: user.resetPasswordToken,
         });
+
         logger.info({
           func: '/api/forget_password',
           message: 'Sent email correctly',
         });
+
         return {
           message: 'Sent email correctly',
         };

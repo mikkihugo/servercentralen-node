@@ -3,8 +3,48 @@ require('dotenv').config();
 
 const domain = 'Mg.servercentralen.net';
 const mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API_KEY, domain });
+const logger = require('./logger');
+
+const techSupportEmail = 'ServerCentralen <technical@Mg.servercentralen.net>';
 
 module.exports = {
+  sendWelcomeEmail: ({ name, email }) => {
+    const emailTemplate = `
+      Dear, ${name}, <br /><br />
+
+      Thanks you for signing up woth ServerCentralen! We hope you enjoy your time with us.<br />
+      Check your account and update your profile.<br /><br />
+      If you have any questions, just reply to this email--we are always happy to help out.<br /><br />
+
+      Cheers,<br />
+      Technology Support Team
+    `;
+
+    const emailContent = {
+      from: techSupportEmail,
+      to: email,
+      subject: 'Welcome',
+      html: emailTemplate,
+    };
+
+    mailgun.messages().send(emailContent, (err, body) => {
+      if (err) {
+        logger.error({
+          func: '/api/registration',
+          message: 'Send welcome email',
+          err,
+        });
+      }
+
+      if (body) {
+        logger.info({
+          func: '/api/registration',
+          message: body,
+        });
+      }
+    });
+  },
+
   sendResetPasswordLink: async ({
     email, name, link, token,
   }) => {
@@ -19,7 +59,7 @@ module.exports = {
     `;
 
     const emailContent = {
-      from: 'ServerCentralen<technical@servercentralen.com>',
+      from: techSupportEmail,
       to: email,
       subject: 'Reset Password',
       html: emailTemplate,
