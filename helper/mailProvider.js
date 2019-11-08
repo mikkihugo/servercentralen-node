@@ -1,13 +1,8 @@
 /* eslint-disable max-len */
 require('dotenv').config();
-// const sgMail = require('@sendgrid/mail');
+
 const domain = 'Mg.servercentralen.net';
-
 const mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API_KEY, domain });
-
-// sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
-
-// const sendGridEmail = (msg) => sgMail.send(msg);
 
 module.exports = {
   sendResetPasswordLink: async ({
