@@ -171,7 +171,7 @@ module.exports = {
         };
       } catch (err) {
         console.log(err);
-        throw new InputError('Email Issue');
+        throw new InputError('There is an issue to send email.');
       }
     }
     throw new InputError('The email is not exist.');
