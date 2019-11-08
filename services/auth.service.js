@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
@@ -8,6 +7,7 @@ const util = require('util');
 
 const InputError = require('../helper/input-error');
 const mailProvider = require('../helper/mailProvider');
+const logger = require('../helper/logger');
 const constants = require('../constants');
 const helper = require('../helper');
 const { User } = require('../models');
@@ -53,12 +53,20 @@ module.exports = {
       const isEqual = await helper.comparePassword(password, user.password);
       const token = getToken({ id: user.id });
       if (isEqual) {
+        logger.info({
+          func: '/api/auth',
+          user,
+        });
         return {
           user: _.omit(user.toJSON(), 'password'),
           token,
         };
       }
     }
+    logger.error({
+      func: '/api/auth',
+      message: 'Invalid email or password',
+    });
     throw new InputError('Invalid email or password');
   },
 
@@ -68,6 +76,10 @@ module.exports = {
     } = req.body;
 
     if (!firstName || !lastName || !email || !password) {
+      logger.error({
+        func: '/api/register',
+        message: 'Invalid request',
+      });
       throw new InputError('Invalid request');
     }
 
@@ -82,6 +94,11 @@ module.exports = {
     });
 
     if (existingUser) {
+      logger.error({
+        func: '/api/register',
+        email,
+        message: 'Email is already exist',
+      });
       throw new InputError('Email is already exist');
     }
 
@@ -90,7 +107,10 @@ module.exports = {
     });
 
     const token = getToken({ id: newUser.id, email: newUser.email });
-
+    logger.info({
+      func: '/api/register',
+      user: newUser,
+    });
     return {
       user: _.omit(newUser.toJSON(), 'password'),
       token,
@@ -106,6 +126,13 @@ module.exports = {
     } = updatedData;
 
     if (firstName === null || lastName === null || email === null) {
+      logger.error({
+        func: '/api/update_profile',
+        firstName,
+        lastName,
+        email,
+        message: 'Invalid request',
+      });
       throw new InputError('Invalid request');
     }
 
@@ -120,6 +147,11 @@ module.exports = {
       });
 
       if (existingUser) {
+        logger.error({
+          func: '/api/update_profile',
+          email,
+          message: 'Email already exists',
+        });
         throw new InputError('Email already exists');
       }
     }
@@ -131,10 +163,19 @@ module.exports = {
     });
 
     if (!user) {
+      logger.error({
+        func: '/api/update_profile',
+        id: currentUser.id,
+        message: 'Invalid user id',
+      });
       throw new InputError('Invalid user id');
     }
 
     await user.update(updatedData);
+    logger.info({
+      func: '/api/update_profile',
+      user,
+    });
     return {
       ..._.omit(user.toJSON(), 'password'),
     };
@@ -165,15 +206,26 @@ module.exports = {
           link: req.headers.host,
           token: user.resetPasswordToken,
         });
-
+        logger.info({
+          func: '/api/forget_password',
+          message: 'Sent email correctly',
+        });
         return {
           message: 'Sent email correctly',
         };
       } catch (err) {
-        console.log(err);
+        logger.error({
+          func: '/api/forget_passwordrofile',
+          err,
+        });
         throw new InputError('There is an issue to send email.');
       }
     }
+    logger.error({
+      func: '/api/update_profile',
+      email,
+      message: 'The email is not exist.',
+    });
     throw new InputError('The email is not exist.');
   },
 
@@ -201,7 +253,11 @@ module.exports = {
           message: 'Password is set successfully.',
         };
       } catch (err) {
-        console.log(err);
+        logger.error({
+          func: '/api/forget_passwordrofile',
+          err,
+        });
+        throw new InputError(err);
       }
     }
     throw new InputError('Invalid reset token.');

@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 const axios = require('axios');
 const qs = require('querystring');
+const logger = require('../helper/logger');
 
 const API_URL = 'https://TSD01.stokab.se';
 
@@ -27,10 +27,18 @@ const createToken = async () => {
       url,
     });
     token = response.data.access_token;
-    console.log(`Token is created successfully - ${token}`);
+    logger.info({
+      func: '/api/getByAddress',
+      message: `Token is created successfully - ${token}`,
+    });
   } catch (error) {
     token = '';
-    console.log(error.response.status);
+    logger.info({
+      func: '/api/getByAddress',
+      name: 'Create Token',
+      status: error.response.status,
+      message: error.response.message,
+    });
   }
 };
 
@@ -62,10 +70,17 @@ module.exports = {
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
         await createToken();
-        console.log('Token is re-created successfully');
+        logger.info({
+          func: '/api/getByAddress',
+          message: `Token is re-created successfully - ${token}`,
+        });
         const response = await fetchAddresses(city, street, number);
         return response;
       }
+      logger.error({
+        func: '/api/getByAddress',
+        error: error.response,
+      });
       return error.response;
     }
   },

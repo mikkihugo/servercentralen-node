@@ -9,7 +9,6 @@ const initializeStokabEndpoints = (app) => {
   // })
 
   app.get('/api/getByAddress', async (req, res, next) => {
-    console.log('/api/getByAddress');
     const response = await service.fetchAddresses(
       encodeURIComponent(req.query.city),
       encodeURIComponent(req.query.street),
