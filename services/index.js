@@ -1,3 +1,4 @@
+require('dotenv').config();
 const axios = require('axios');
 const qs = require('querystring');
 const logger = require('../helper/logger');
@@ -10,9 +11,9 @@ const createToken = async () => {
   const url = `${API_URL}/connect/token`;
   const data = {
     grant_type: 'client_credentials',
-    client_ID: 'NSC',
-    scope: 'Stokab_api.authority Stokab_api.accesslevel3',
-    client_secret: 'G1HvQkRkQDqA6ULQnfP9RqqeHKS0zVAmZZxK1o+s8kM=',
+    client_ID: process.env.CLIENT_ID,
+    scope: process.env.SCOPE,
+    client_secret: process.env.CLIENT_SECRET,
   };
 
   const headers = {
@@ -79,7 +80,7 @@ module.exports = {
       }
       logger.error({
         func: '/api/getByAddress',
-        error: error.response,
+        error,
       });
       return error.response;
     }
