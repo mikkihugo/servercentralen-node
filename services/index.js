@@ -29,13 +29,13 @@ const createToken = async () => {
     });
     token = response.data.access_token;
     logger.info({
-      func: '/api/getByAddress',
+      func: 'GET /api/getByAddress',
       message: `Token is created successfully - ${token}`,
     });
   } catch (error) {
     token = '';
     logger.info({
-      func: '/api/getByAddress',
+      func: 'GET /api/getByAddress',
       name: 'Create Token',
       status: error.response.status,
       message: error.response.message,
@@ -72,14 +72,14 @@ module.exports = {
       if (error && error.response && error.response.status === 401) {
         await createToken();
         logger.info({
-          func: '/api/getByAddress',
+          func: 'GET /api/getByAddress',
           message: `Token is re-created successfully - ${token}`,
         });
         const response = await fetchAddresses(city, street, number);
         return response;
       }
       logger.error({
-        func: '/api/getByAddress',
+        func: 'GET /api/getByAddress',
         error,
       });
       return error.response;

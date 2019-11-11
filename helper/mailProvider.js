@@ -30,7 +30,7 @@ module.exports = {
     mailgun.messages().send(emailContent, (err, body) => {
       if (err) {
         logger.error({
-          func: '/api/registration',
+          func: 'POST /api/registration',
           message: 'Send welcome email',
           err,
         });
@@ -38,7 +38,7 @@ module.exports = {
 
       if (body) {
         logger.info({
-          func: '/api/registration',
+          func: 'POST /api/registration',
           message: body,
         });
       }

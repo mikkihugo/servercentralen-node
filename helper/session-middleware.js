@@ -15,11 +15,13 @@ const sessionMiddleware = async (req, res, next) => {
       },
     });
 
-    await user.update({
-      lastLogin: new Date(),
-    });
+    if (user) {
+      await user.update({
+        lastLogin: new Date(),
+      });
 
-    req.user = user && _.omit(user.toJSON(), 'password');
+      req.user = user && _.omit(user.toJSON(), 'password');
+    }
   }
   next();
 };

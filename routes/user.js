@@ -46,6 +46,15 @@ const initializeUserEndpoints = (app) => {
       return next(err);
     }
   });
+
+  app.delete('/api/account', async (req, res, next) => {
+    try {
+      const response = await authService.deleteAccount(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
 
 module.exports = initializeUserEndpoints;

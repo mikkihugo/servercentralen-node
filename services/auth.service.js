@@ -54,7 +54,7 @@ module.exports = {
       const token = getToken({ id: user.id });
       if (isEqual) {
         logger.info({
-          func: '/api/auth',
+          func: 'POST /api/auth',
           user,
         });
         return {
@@ -64,7 +64,7 @@ module.exports = {
       }
     }
     logger.error({
-      func: '/api/auth',
+      func: 'POST /api/auth',
       message: 'Invalid email or password',
     });
     throw new InputError('Invalid email or password');
@@ -77,7 +77,7 @@ module.exports = {
 
     if (!firstName || !lastName || !email || !password) {
       logger.error({
-        func: '/api/register',
+        func: 'POST /api/register',
         message: 'Invalid request',
       });
       throw new InputError('Invalid request');
@@ -95,7 +95,7 @@ module.exports = {
 
     if (existingUser) {
       logger.error({
-        func: '/api/register',
+        func: 'POST /api/register',
         email,
         message: 'Email is already exist',
       });
@@ -108,7 +108,7 @@ module.exports = {
 
     const token = getToken({ id: newUser.id, email: newUser.email });
     logger.info({
-      func: '/api/register',
+      func: 'POST /api/register',
       user: newUser,
     });
     mailProvider.sendWelcomeEmail({ name: newUser.firstName, email: newUser.email });
@@ -129,7 +129,7 @@ module.exports = {
 
     if (firstName === null || lastName === null || email === null) {
       logger.error({
-        func: '/api/update_profile',
+        func: 'PUT /api/update_profile',
         firstName,
         lastName,
         email,
@@ -150,7 +150,7 @@ module.exports = {
 
       if (existingUser) {
         logger.error({
-          func: '/api/update_profile',
+          func: 'PUT /api/update_profile',
           email,
           message: 'Email already exists',
         });
@@ -166,7 +166,7 @@ module.exports = {
 
     if (!user) {
       logger.error({
-        func: '/api/update_profile',
+        func: 'PUT /api/update_profile',
         id: currentUser.id,
         message: 'Invalid user id',
       });
@@ -175,7 +175,7 @@ module.exports = {
 
     await user.update(updatedData);
     logger.info({
-      func: '/api/update_profile',
+      func: 'PUT /api/update_profile',
       user,
     });
     return {
@@ -210,7 +210,7 @@ module.exports = {
         });
 
         logger.info({
-          func: '/api/forget_password',
+          func: 'POST /api/forget_password',
           message: 'Sent email correctly',
         });
 
@@ -219,14 +219,14 @@ module.exports = {
         };
       } catch (err) {
         logger.error({
-          func: '/api/forget_passwordrofile',
+          func: 'POST /api/forget_passwordrofile',
           err,
         });
         throw new InputError('There is an issue to send email.');
       }
     }
     logger.error({
-      func: '/api/update_profile',
+      func: 'POST /api/forget_password',
       email,
       message: 'The email is not exist.',
     });
@@ -253,17 +253,43 @@ module.exports = {
 
         await user.save();
 
+        logger.info({
+          func: 'POST /api/reset_password',
+          message: 'Password is set successfully.',
+        });
+
         return {
           message: 'Password is set successfully.',
         };
       } catch (err) {
         logger.error({
-          func: '/api/forget_passwordrofile',
+          func: 'POST /api/reset_password',
           err,
         });
         throw new InputError(err);
       }
     }
     throw new InputError('Invalid reset token.');
+  },
+
+  deleteAccount: async (req) => {
+    try {
+      User.destroy({ where: { id: req.user.id } });
+
+      logger.info({
+        func: 'DELETE /api/account',
+        message: 'Account is removed successfully.',
+      });
+
+      return {
+        message: 'Account is removed successfully.',
+      };
+    } catch (err) {
+      logger.error({
+        func: 'DELETE /api/account',
+        err,
+      });
+      throw new InputError(err);
+    }
   },
 };
