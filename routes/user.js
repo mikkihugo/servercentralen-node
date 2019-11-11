@@ -20,6 +20,16 @@ const initializeUserEndpoints = (app) => {
     }
   });
 
+  app.get('/api/me', async (req, res, next) => {
+    try {
+      return res.json({
+        user: req.user,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  });
+
   app.put('/api/update_profile', async (req, res, next) => {
     try {
       const response = await authService.updateUser(req);
