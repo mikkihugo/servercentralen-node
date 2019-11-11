@@ -1,6 +1,5 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const _ = require('lodash');
 const Sequelize = require('sequelize');
 const crypto = require('crypto');
 const util = require('util');
@@ -58,7 +57,6 @@ module.exports = {
           user,
         });
         return {
-          user: _.omit(user.toJSON(), 'password'),
           token,
         };
       }
@@ -114,7 +112,6 @@ module.exports = {
     mailProvider.sendWelcomeEmail({ name: newUser.firstName, email: newUser.email });
 
     return {
-      user: _.omit(newUser.toJSON(), 'password'),
       token,
     };
   },
@@ -179,7 +176,7 @@ module.exports = {
       user,
     });
     return {
-      ..._.omit(user.toJSON(), 'password'),
+      message: 'Update profile successfully.',
     };
   },
 
@@ -211,11 +208,11 @@ module.exports = {
 
         logger.info({
           func: 'POST /api/forget_password',
-          message: 'Sent email correctly',
+          message: 'Sent email successfully.',
         });
 
         return {
-          message: 'Sent email correctly',
+          message: 'Sent email successfully.',
         };
       } catch (err) {
         logger.error({
