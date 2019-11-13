@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const Sequelize = require('sequelize');
 const crypto = require('crypto');
 const util = require('util');
+const _ = require('lodash');
 
 const InputError = require('../helper/input-error');
 const mailProvider = require('../helper/mailProvider');
@@ -170,13 +171,13 @@ module.exports = {
       throw new InputError('Invalid user id');
     }
 
-    await user.update(updatedData);
+    const updatedUser = await user.update(updatedData);
     logger.info({
       func: 'PUT /api/update_profile',
-      user,
+      updatedUser,
     });
     return {
-      message: 'Update profile successfully.',
+      user: updatedUser && _.omit(updatedUser.toJSON(), 'password'),
     };
   },
 
