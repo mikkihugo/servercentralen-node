@@ -130,7 +130,7 @@ module.exports = {
 
     if (firstName === null || lastName === null || email === null) {
       logger.error({
-        func: 'PUT /api/update_profile',
+        func: 'PUT /api/user',
         firstName,
         lastName,
         email,
@@ -151,7 +151,7 @@ module.exports = {
 
       if (existingUser) {
         logger.error({
-          func: 'PUT /api/update_profile',
+          func: 'PUT /api/user',
           email,
           message: 'Email already exists',
         });
@@ -167,7 +167,7 @@ module.exports = {
 
     if (!user) {
       logger.error({
-        func: 'PUT /api/update_profile',
+        func: 'PUT /api/user',
         id: currentUser.id,
         message: 'Invalid user id',
       });
@@ -176,7 +176,7 @@ module.exports = {
 
     const updatedUser = await user.update(updatedData);
     logger.info({
-      func: 'PUT /api/update_profile',
+      func: 'PUT /api/user',
       updatedUser,
     });
     return {
@@ -286,7 +286,7 @@ module.exports = {
       });
 
       logger.info({
-        func: 'DELETE /api/account',
+        func: 'DELETE /api/user',
         message: 'Account is closed successfully.',
       });
 
@@ -295,7 +295,7 @@ module.exports = {
       };
     } catch (err) {
       logger.error({
-        func: 'DELETE /api/account',
+        func: 'DELETE /api/user',
         err,
       });
       throw new InputError(err);
@@ -306,7 +306,7 @@ module.exports = {
     const currentUser = req.user;
     if (currentUser.role !== 'admin') {
       logger.error({
-        func: 'GET /api/users',
+        func: 'GET /api/user/list',
         message: 'No permission!',
       });
       throw new InputError('No permission!');

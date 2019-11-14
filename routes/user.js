@@ -30,7 +30,7 @@ const initializeUserEndpoints = (app) => {
     }
   });
 
-  app.put('/api/update_profile', async (req, res, next) => {
+  app.put('/api/user', async (req, res, next) => {
     try {
       const response = await authService.updateUser(req);
       return res.json(response);
@@ -57,7 +57,7 @@ const initializeUserEndpoints = (app) => {
     }
   });
 
-  app.delete('/api/account', async (req, res, next) => {
+  app.delete('/api/user', async (req, res, next) => {
     try {
       const response = await authService.deleteAccount(req);
       return res.json(response);
@@ -66,7 +66,7 @@ const initializeUserEndpoints = (app) => {
     }
   });
 
-  app.get('/api/users', async (req, res, next) => {
+  app.get('/api/user/list', async (req, res, next) => {
     try {
       const response = await authService.fetchUsers(req);
       return res.json(response);
