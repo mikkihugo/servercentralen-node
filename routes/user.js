@@ -1,7 +1,7 @@
 const authService = require('../services/auth.service');
 
 const initializeUserEndpoints = (app) => {
-  app.post('/api/register', async (req, res, next) => {
+  app.post('/api/user', async (req, res, next) => {
     try {
       const response = await authService.register(req);
       return res.json(response);
@@ -20,7 +20,7 @@ const initializeUserEndpoints = (app) => {
     }
   });
 
-  app.get('/api/me', async (req, res, next) => {
+  app.get('/api/user', async (req, res, next) => {
     try {
       return res.json({
         user: req.user,
@@ -39,24 +39,6 @@ const initializeUserEndpoints = (app) => {
     }
   });
 
-  app.post('/api/forget_password', async (req, res, next) => {
-    try {
-      const response = await authService.sendResetEmail(req);
-      return res.json(response);
-    } catch (err) {
-      return next(err);
-    }
-  });
-
-  app.post('/api/reset_password', async (req, res, next) => {
-    try {
-      const response = await authService.resetPassword(req);
-      return res.json(response);
-    } catch (err) {
-      return next(err);
-    }
-  });
-
   app.delete('/api/user', async (req, res, next) => {
     try {
       const response = await authService.deleteAccount(req);
@@ -69,6 +51,24 @@ const initializeUserEndpoints = (app) => {
   app.get('/api/user/list', async (req, res, next) => {
     try {
       const response = await authService.fetchUsers(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.post('/api/forget_password', async (req, res, next) => {
+    try {
+      const response = await authService.sendResetEmail(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.post('/api/reset_password', async (req, res, next) => {
+    try {
+      const response = await authService.resetPassword(req);
       return res.json(response);
     } catch (err) {
       return next(err);
