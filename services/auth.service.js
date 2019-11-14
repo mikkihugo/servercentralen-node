@@ -50,6 +50,9 @@ module.exports = {
     });
 
     if (user) {
+      if (user.isClosed) {
+        throw new InputError('Your account is closed. Please contact support team to re-activate your account.');
+      }
       const isEqual = await helper.comparePassword(password, user.password);
       const token = getToken({ id: user.id });
       if (isEqual) {
@@ -271,16 +274,24 @@ module.exports = {
   },
 
   deleteAccount: async (req) => {
+    const user = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+
     try {
-      User.destroy({ where: { id: req.user.id } });
+      await user.update({
+        isClosed: 1,
+      });
 
       logger.info({
         func: 'DELETE /api/account',
-        message: 'Account is removed successfully.',
+        message: 'Account is closed successfully.',
       });
 
       return {
-        message: 'Account is removed successfully.',
+        message: 'Account is closed successfully.',
       };
     } catch (err) {
       logger.error({
@@ -289,5 +300,38 @@ module.exports = {
       });
       throw new InputError(err);
     }
+  },
+
+  fetchUsers: async (req) => {
+    const currentUser = req.user;
+    if (currentUser.role !== 'admin') {
+      logger.error({
+        func: 'GET /api/users',
+        message: 'No permission!',
+      });
+      throw new InputError('No permission!');
+    }
+
+    const {
+      offset = 0, limit = 25,
+    } = req.query;
+
+    const query = {
+      where: {
+        role: 'user',
+      },
+      offset: Number(offset || 0),
+      limit: Number(limit || 25),
+      order: [
+        ['firstName', 'asc'],
+      ],
+    };
+
+    const users = await User.findAndCountAll(query);
+    return {
+      offset: Number(offset || 0),
+      count: users.count,
+      rows: users.rows,
+    };
   },
 };

@@ -65,6 +65,15 @@ const initializeUserEndpoints = (app) => {
       return next(err);
     }
   });
+
+  app.get('/api/users', async (req, res, next) => {
+    try {
+      const response = await authService.fetchUsers(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
 
 module.exports = initializeUserEndpoints;

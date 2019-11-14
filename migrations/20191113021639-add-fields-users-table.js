@@ -2,7 +2,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('users', 'isActive', {
       allowNull: false,
-      defaultValue: 0,
+      defaultValue: 1,
       type: Sequelize.BOOLEAN,
     });
 
