@@ -23,7 +23,7 @@ const cryptoRandomBytes = util.promisify(crypto.randomBytes);
 
 const serializeUpdatedData = (rawData) => {
   const inputFields = [
-    'firstName', 'lastName', 'email', 'streetAddress', 'city', 'country', 'postalCode', 'aboutMe',
+    'id', 'firstName', 'lastName', 'email', 'streetAddress', 'city', 'country', 'postalCode', 'aboutMe', 'isClosed', 'isActive',
   ];
   const updatedFields = {};
 
@@ -53,6 +53,11 @@ module.exports = {
       if (user.isClosed) {
         throw new InputError('Your account is closed. Please contact support team to re-activate your account.');
       }
+
+      if (!user.isActive) {
+        throw new InputError('Your account is deactivated. Please contact support team to re-activate your account.');
+      }
+
       const isEqual = await helper.comparePassword(password, user.password);
       const token = getToken({ id: user.id });
       if (isEqual) {
@@ -121,12 +126,12 @@ module.exports = {
   },
 
   updateUser: async (req) => {
-    const currentUser = req.user;
-
     const updatedData = serializeUpdatedData(req.body);
     const {
-      firstName, lastName, email,
+      id, firstName, lastName, email,
     } = updatedData;
+
+    const userId = id || req.user.id;
 
     if (firstName === null || lastName === null || email === null) {
       logger.error({
@@ -143,7 +148,7 @@ module.exports = {
       const existingUser = await User.findOne({
         where: {
           id: {
-            [Op.not]: currentUser.id,
+            [Op.not]: userId,
           },
           email,
         },
@@ -161,14 +166,14 @@ module.exports = {
 
     const user = await User.findOne({
       where: {
-        id: currentUser.id,
+        id: userId,
       },
     });
 
     if (!user) {
       logger.error({
         func: 'PUT /api/user',
-        id: currentUser.id,
+        id: userId,
         message: 'Invalid user id',
       });
       throw new InputError('Invalid user id');
@@ -283,6 +288,7 @@ module.exports = {
     try {
       await user.update({
         isClosed: 1,
+        isActive: 0,
       });
 
       logger.info({
@@ -320,6 +326,17 @@ module.exports = {
       where: {
         role: 'user',
       },
+      attributes: [
+        'id',
+        'firstName',
+        'lastName',
+        'email',
+        'isActive',
+        'isClosed',
+        'role',
+        'createdAt',
+        'updatedAt',
+      ],
       offset: Number(offset || 0),
       limit: Number(limit || 25),
       order: [
