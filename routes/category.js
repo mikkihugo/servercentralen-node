@@ -2,12 +2,31 @@ require('dotenv').config();
 const path = require('path');
 const multer = require('multer');
 const constants = require('../constants');
+const categoryService = require('../services/category.service');
 
 const upload = multer({ dest: constants.UPLOAD_TEMP_DIR });
 
 const fsPromises = require('../helper/fs-promise');
 
 const initializeCategoryEndpoints = (app) => {
+  app.post('/api/category', async (req, res, next) => {
+    try {
+      const response = await categoryService.addCategory(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.put('/api/category/:categoryId', async (req, res, next) => {
+    try {
+      const response = await categoryService.updateCategory(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
   app.post('/api/category/asset/', upload.single('file'), async (req, res, next) => {
     try {
       if (!req.file || !req.body) {
