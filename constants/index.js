@@ -9,4 +9,5 @@ module.exports = {
     'admin',
     'user',
   ],
+  UPLOAD_TEMP_DIR: '/tmp/upload',
 };
