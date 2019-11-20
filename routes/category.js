@@ -27,6 +27,15 @@ const initializeCategoryEndpoints = (app) => {
     }
   });
 
+  app.get('/api/category/list', async (req, res, next) => {
+    try {
+      const response = await categoryService.fetchCategories(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
   app.post('/api/category/asset/', upload.single('file'), async (req, res, next) => {
     try {
       if (!req.file || !req.body) {

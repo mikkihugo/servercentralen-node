@@ -45,7 +45,7 @@ module.exports = {
 
     logger.info({
       func: 'POST /api/category',
-      user: newCategory,
+      category: newCategory,
     });
 
     return {
@@ -121,6 +121,35 @@ module.exports = {
 
     return {
       category: updatedCategory,
+    };
+  },
+
+  fetchCategories: async (req) => {
+    const {
+      offset = 0, limit = 25,
+    } = req.query;
+
+    const query = {
+      attributes: [
+        'id',
+        'category_name',
+        'description',
+        'logo_url',
+        'createdAt',
+        'updatedAt',
+      ],
+      offset: Number(offset || 0),
+      limit: Number(limit || 25),
+      order: [
+        ['category_name', 'asc'],
+      ],
+    };
+
+    const categories = await ProdCategory.findAndCountAll(query);
+    return {
+      offset: Number(offset || 0),
+      count: categories.count,
+      rows: categories.rows,
     };
   },
 };
