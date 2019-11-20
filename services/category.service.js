@@ -124,6 +124,64 @@ module.exports = {
     };
   },
 
+  deleteCategory: async (req) => {
+    const categoryId = req.params.categoryId || '';
+
+    const category = categoryId && await ProdCategory.findByPk(categoryId);
+    if (!category) {
+      logger.error({
+        func: 'DELETE /api/category',
+        id: categoryId,
+        message: 'Invalid category id',
+      });
+      throw new InputError('invalid category id');
+    }
+
+    await category.destroy();
+
+    return {
+      success: true,
+    };
+  },
+
+  fetchCategory: async (req) => {
+    const {
+      id,
+    } = req.query;
+
+    if (!id) {
+      logger.error({
+        func: 'GET /api/category',
+        id,
+        message: 'Invalid request',
+      });
+      throw new InputError('Invalid request');
+    }
+
+    const category = await ProdCategory.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (category) {
+      logger.info({
+        func: 'GET /api/category',
+        category,
+      });
+
+      return {
+        category,
+      };
+    }
+
+    logger.error({
+      func: 'GET /api/category',
+      message: 'Invalid category id',
+    });
+    throw new InputError('Invalid category id');
+  },
+
   fetchCategories: async (req) => {
     const {
       offset = 0, limit = 25,

@@ -27,9 +27,27 @@ const initializeCategoryEndpoints = (app) => {
     }
   });
 
+  app.delete('/api/category/:categoryId', async (req, res, next) => {
+    try {
+      const response = await categoryService.deleteCategory(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
   app.get('/api/category/list', async (req, res, next) => {
     try {
       const response = await categoryService.fetchCategories(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.get('/api/category', async (req, res, next) => {
+    try {
+      const response = await categoryService.fetchCategory(req);
       return res.json(response);
     } catch (err) {
       return next(err);
