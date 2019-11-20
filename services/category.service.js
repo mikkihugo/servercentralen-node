@@ -139,6 +139,12 @@ module.exports = {
 
     await category.destroy();
 
+    logger.info({
+      func: 'DELETE /api/category',
+      id: categoryId,
+      success: true,
+    });
+
     return {
       success: true,
     };
