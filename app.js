@@ -46,6 +46,10 @@ app.use(['/api'], jwt(), sessionMiddleware);
 // define endpoints
 endpoints(app);
 
+// initialize public path to store images
+const publicPath = path.join(__dirname, './public');
+app.use(express.static(publicPath));
+
 app.use(express.static(path.join(__dirname, './dist')));
 app.use('/', express.static(`${__dirname}./`));
 app.get('/', (req, res) => {
