@@ -11,7 +11,7 @@ const { Op } = Sequelize;
 module.exports = {
   addCategory: async (req) => {
     const {
-      categoryName, description, logoUrl,
+      categoryName, description, logoUrl, logoWidth, logoHeight,
     } = req.body;
 
     if (!categoryName) {
@@ -41,6 +41,8 @@ module.exports = {
       category_name: categoryName,
       description,
       logo_url: logoUrl,
+      logo_width: logoWidth,
+      logo_height: logoHeight,
     });
 
     logger.info({
@@ -64,7 +66,7 @@ module.exports = {
     }
 
     const {
-      categoryName, description, logoUrl,
+      categoryName, description, logoUrl, logoWidth, logoHeight,
     } = req.body;
 
     if (!categoryName) {
@@ -112,6 +114,8 @@ module.exports = {
       category_name: categoryName,
       description,
       logo_url: logoUrl,
+      logo_width: logoWidth,
+      logo_height: logoHeight,
     });
 
     logger.info({
