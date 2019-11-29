@@ -121,6 +121,9 @@ module.exports = {
       const response = await fetchAvailabilityByAddress(city, street, number);
       logger.info({
         func: 'GET /api/getAvailabilityByAddress',
+        city,
+        street,
+        number,
         message: 'Success',
       });
       return response;
@@ -132,6 +135,9 @@ module.exports = {
       }
       logger.error({
         func: 'GET /api/getAvailabilityByAddress',
+        city,
+        street,
+        number,
         error,
       });
       return error.response;
@@ -143,6 +149,7 @@ module.exports = {
       const response = await fetchAvailabilityByPointId(pointId);
       logger.info({
         func: 'GET /api/getAvailabilityByPointId',
+        pointId,
         message: 'Success',
       });
       return response;
@@ -154,6 +161,7 @@ module.exports = {
       }
       logger.error({
         func: 'GET /api/getAvailabilityByPointId',
+        pointId,
         error,
       });
       return error.response;
@@ -165,6 +173,8 @@ module.exports = {
       const response = await fetchAvailabilityByEstate(realestate, estatesuffix);
       logger.info({
         func: 'GET /api/getAvailabilityByEstate',
+        realestate,
+        estatesuffix,
         message: 'Success',
       });
       return response;
@@ -176,6 +186,8 @@ module.exports = {
       }
       logger.error({
         func: 'GET /api/getAvailabilityByEstate',
+        realestate,
+        estatesuffix,
         error,
       });
       return error.response;
