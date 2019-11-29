@@ -23,6 +23,17 @@ const initializeStokabEndpoints = (app) => {
     return res.json(response);
   });
 
+  app.get('/api/stokab/getAvailabilityByEstate', async (req, res, next) => {
+    const response = await stokabService.fetchAvailabilityByPointId(
+      encodeURIComponent(req.query.realestate),
+      encodeURIComponent(req.query.estatesuffix),
+    );
+    if (response.status) {
+      return next(response);
+    }
+    return res.json(response);
+  });
+
   app.get('/api/stokab/feasibility', async (req, res, next) => {
     const response = await stokabService.fetchFeasibilityAddress();
     if (response.status) {

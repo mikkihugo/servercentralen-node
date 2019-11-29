@@ -71,6 +71,20 @@ const fetchAvailabilityByPointId = async (pointId) => {
   return response.data;
 };
 
+const fetchAvailabilityByEstate = async (realestate, estatesuffix) => {
+  const url = `${API_URL}/api/1.3/availability/GetByEstate?realestate=${realestate}&estatesuffix=${estatesuffix}`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios({
+    method: 'GET',
+    headers,
+    url,
+  });
+  return response.data;
+};
+
 const fetchFeasibilityAddress = async () => {
   const url = `${API_URL}/api/1.3/feasibility`;
   const headers = {
@@ -140,6 +154,28 @@ module.exports = {
       }
       logger.error({
         func: 'GET /api/getAvailabilityByPointId',
+        error,
+      });
+      return error.response;
+    }
+  },
+
+  fetchAvailabilityByEstate: async (realestate, estatesuffix) => {
+    try {
+      const response = await fetchAvailabilityByEstate(realestate, estatesuffix);
+      logger.info({
+        func: 'GET /api/getAvailabilityByEstate',
+        message: 'Success',
+      });
+      return response;
+    } catch (error) {
+      if (error && error.response && error.response.status === 401) {
+        await reCreateToken();
+        const response = await fetchAvailabilityByEstate(realestate, estatesuffix);
+        return response;
+      }
+      logger.error({
+        func: 'GET /api/getAvailabilityByEstate',
         error,
       });
       return error.response;
