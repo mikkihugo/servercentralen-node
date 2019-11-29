@@ -5,7 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const endpoints = require('./routes');
-const service = require('./services');
+const stokabService = require('./services/stokab.service');
 const helper = require('./helper');
 const errorHandler = require('./helper/error-handler');
 const jwt = require('./helper/jwt');
@@ -61,7 +61,7 @@ app.get('/**', (req, res) => {
 
 // global error handler
 app.use(errorHandler);
-service.getToken();
+stokabService.getToken();
 
 app.listen(8080, () => {
   // eslint-disable-next-line no-console
