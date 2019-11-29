@@ -1,12 +1,8 @@
 const stokabService = require('../services/stokab.service');
 
 const initializeStokabEndpoints = (app) => {
-  app.get('/api/stokab/getAvailabilityByAddress', async (req, res, next) => {
-    const response = await stokabService.fetchAvailabilityByAddress(
-      encodeURIComponent(req.query.city),
-      encodeURIComponent(req.query.street),
-      encodeURIComponent(req.query.number),
-    );
+  app.get('/api/stokab/feasibility', async (req, res, next) => {
+    const response = await stokabService.fetchFeasibilityAddress();
     if (response.status) {
       return next(response);
     }
@@ -34,8 +30,12 @@ const initializeStokabEndpoints = (app) => {
     return res.json(response);
   });
 
-  app.get('/api/stokab/feasibility', async (req, res, next) => {
-    const response = await stokabService.fetchFeasibilityAddress();
+  app.get('/api/stokab/getAvailabilityByAddress', async (req, res, next) => {
+    const response = await stokabService.fetchAvailabilityByAddress(
+      encodeURIComponent(req.query.city),
+      encodeURIComponent(req.query.street),
+      encodeURIComponent(req.query.number),
+    );
     if (response.status) {
       return next(response);
     }
