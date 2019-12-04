@@ -145,6 +145,63 @@ const fetchOfferInquiry = async (inquiryId) => {
   return response.data;
 };
 
+const order = async (data) => {
+  const url = `${API_URL}/api/1.3/order`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios({
+    method: 'POST',
+    headers,
+    url,
+    data,
+  });
+  return response.data;
+};
+
+const fetchOrder = async (orderId) => {
+  const url = `${API_URL}/api/1.3/order/${orderId}`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios({
+    method: 'GET',
+    headers,
+    url,
+  });
+  return response.data;
+};
+
+const fetchInvoiceGroup = async () => {
+  const url = `${API_URL}/api/1.3/invoiceGroup`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios({
+    method: 'GET',
+    headers,
+    url,
+  });
+  return response.data;
+};
+
+const fetchFrameworkAgreement = async () => {
+  const url = `${API_URL}/api/1.3/frameworkAgreement`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios({
+    method: 'GET',
+    headers,
+    url,
+  });
+  return response.data;
+};
+
 const reCreateToken = async () => {
   await createToken();
   logger.info({
@@ -385,6 +442,128 @@ module.exports = {
       logger.error({
         func: 'GET /api/stokab/offerInquiry',
         inquiryId,
+        error: error.response.data,
+      });
+      return error.response.data || error.response;
+    }
+  },
+
+  order: async (req) => {
+    const {
+      inquiryId,
+      responsiblePersonEmail,
+      invoiceReference,
+      groupInvoiceBy,
+      preferredDeliveryDate,
+      endCustomer,
+    } = req.body;
+
+    const data = {
+      inquiryId,
+      responsiblePersonEmail,
+      invoiceReference,
+      groupInvoiceBy,
+      preferredDeliveryDate,
+      endCustomer,
+    };
+
+    try {
+      const response = await order(data);
+      logger.info({
+        func: 'POST /api/stokab/order',
+        data,
+        message: 'Success',
+      });
+      return response;
+    } catch (error) {
+      if (error && error.response && error.response.status === 401) {
+        await reCreateToken();
+        const response = await order(data);
+        return response;
+      }
+      logger.error({
+        func: 'POST /api/stokab/order',
+        data,
+        error: error.response.data,
+      });
+      return error.response.data || error.response;
+    }
+  },
+
+  fetchOrder: async (orderId) => {
+    if (!orderId) {
+      logger.error({
+        func: 'GET /api/stokab/order',
+        orderId,
+        message: 'Invalid request',
+      });
+      throw new InputError('Invalid request');
+    }
+
+    try {
+      const response = await fetchOrder(orderId);
+      logger.info({
+        func: 'GET /api/stokab/order',
+        orderId,
+        response,
+        message: 'Success',
+      });
+      return response;
+    } catch (error) {
+      if (error && error.response && error.response.status === 401) {
+        await reCreateToken();
+        const response = await fetchOrder(orderId);
+        return response;
+      }
+      logger.error({
+        func: 'GET /api/stokab/order',
+        orderId,
+        error: error.response.data,
+      });
+      return error.response.data || error.response;
+    }
+  },
+
+  fetchInvoiceGroup: async () => {
+    try {
+      const response = await fetchInvoiceGroup();
+      logger.info({
+        func: 'GET /api/stokab/invoiceGroup',
+        response,
+        message: 'Success',
+      });
+      return response;
+    } catch (error) {
+      if (error && error.response && error.response.status === 401) {
+        await reCreateToken();
+        const response = await fetchInvoiceGroup();
+        return response;
+      }
+      logger.error({
+        func: 'GET /api/stokab/invoiceGroup',
+        error: error.response.data,
+      });
+      return error.response.data || error.response;
+    }
+  },
+
+  fetchFrameworkAgreement: async () => {
+    try {
+      const response = await fetchFrameworkAgreement();
+      logger.info({
+        func: 'GET /api/stokab/frameworkAgreement',
+        response,
+        message: 'Success',
+      });
+      return response;
+    } catch (error) {
+      if (error && error.response && error.response.status === 401) {
+        await reCreateToken();
+        const response = await fetchFrameworkAgreement();
+        return response;
+      }
+      logger.error({
+        func: 'GET /api/stokab/frameworkAgreement',
         error: error.response.data,
       });
       return error.response.data || error.response;

@@ -69,6 +69,43 @@ const initializeStokabEndpoints = (app) => {
       return next(err);
     }
   });
+
+  app.post('/api/stokab/order', async (req, res, next) => {
+    try {
+      const response = await stokabService.order(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.get('/api/stokab/order/:orderId', async (req, res, next) => {
+    try {
+      const orderId = req.params.orderId || '';
+      const response = await stokabService.fetchOrder(orderId);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.get('/api/stokab/invoiceGroup', async (req, res, next) => {
+    try {
+      const response = await stokabService.fetchInvoiceGroup();
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.get('/api/stokab/frameworkAgreement', async (req, res, next) => {
+    try {
+      const response = await stokabService.fetchFrameworkAgreement();
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
 
 module.exports = initializeStokabEndpoints;
