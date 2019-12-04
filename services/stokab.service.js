@@ -99,6 +99,21 @@ const fetchAvailabilityByAddress = async (city, street, number) => {
   return response.data;
 };
 
+const priceEstimate = async (data) => {
+  const url = `${API_URL}/api/1.3/priceEstimate`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios({
+    method: 'POST',
+    headers,
+    url,
+    data,
+  });
+  return response.data;
+};
+
 const reCreateToken = async () => {
   await createToken();
   logger.info({
@@ -134,7 +149,7 @@ module.exports = {
         func: 'GET /api/stokab/feasibility',
         error,
       });
-      return error.response;
+      return error.response.data || error.response;
     }
   },
 
@@ -158,7 +173,7 @@ module.exports = {
         pointId,
         error,
       });
-      return error.response;
+      return error.response.data || error.response;
     }
   },
 
@@ -184,7 +199,7 @@ module.exports = {
         estatesuffix,
         error,
       });
-      return error.response;
+      return error.response.data || error.response;
     }
   },
 
@@ -212,7 +227,46 @@ module.exports = {
         number,
         error,
       });
-      return error.response;
+      return error.response.data || error.response;
+    }
+  },
+
+  priceEstimate: async (req) => {
+    const {
+      invoiceGroupId, frameworkAgreementId, to, from, customerType, contractPeriodMonths, noOfSingleFibers, noOfFiberPairs,
+    } = req.body;
+
+    const data = {
+      invoiceGroupId,
+      frameworkAgreementId,
+      to,
+      from,
+      customerType,
+      contractPeriodMonths,
+      noOfSingleFibers,
+      noOfFiberPairs,
+    };
+
+    try {
+      const response = await priceEstimate(data);
+      logger.info({
+        func: 'POST /api/stokab/priceEstimate',
+        data,
+        message: 'Success',
+      });
+      return response;
+    } catch (error) {
+      if (error && error.response && error.response.status === 401) {
+        await reCreateToken();
+        const response = await await priceEstimate(data);
+        return response;
+      }
+      logger.error({
+        func: 'POST /api/stokab/priceEstimate',
+        data,
+        error: error.response.data,
+      });
+      return error.response.data || error.response;
     }
   },
 };

@@ -20,7 +20,7 @@ const initializeStokabEndpoints = (app) => {
   });
 
   app.get('/api/stokab/getAvailabilityByEstate', async (req, res, next) => {
-    const response = await stokabService.fetchAvailabilityByPointId(
+    const response = await stokabService.fetchAvailabilityByEstate(
       encodeURIComponent(req.query.realestate),
       encodeURIComponent(req.query.estatesuffix),
     );
@@ -40,6 +40,15 @@ const initializeStokabEndpoints = (app) => {
       return next(response);
     }
     return res.json(response);
+  });
+
+  app.post('/api/stokab/priceEstimate', async (req, res, next) => {
+    try {
+      const response = await stokabService.priceEstimate(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
   });
 };
 
