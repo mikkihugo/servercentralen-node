@@ -50,6 +50,25 @@ const initializeStokabEndpoints = (app) => {
       return next(err);
     }
   });
+
+  app.post('/api/stokab/offerInquiry', async (req, res, next) => {
+    try {
+      const response = await stokabService.offerInquiry(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.get('/api/stokab/offerInquiry/:inquiryId', async (req, res, next) => {
+    try {
+      const inquiryId = req.params.inquiryId || '';
+      const response = await stokabService.fetchOfferInquiry(inquiryId);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
 
 module.exports = initializeStokabEndpoints;
