@@ -27,9 +27,9 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
-      email: {
+      userId: {
         allowNull: true,
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
       },
       type: {
         allowNull: true,
@@ -64,6 +64,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+    });
+
+    await queryInterface.addConstraint('stokab_price', ['userId'], {
+      name: 'fk_stokab_price_users',
+      type: 'FOREIGN KEY',
+      references: {
+        table: 'users',
+        field: 'id',
       },
     });
   },

@@ -31,7 +31,7 @@ module.exports = {
         start,
         street,
         type,
-        email: req.user.email,
+        userId: req.user.id,
       });
 
       logger.info({

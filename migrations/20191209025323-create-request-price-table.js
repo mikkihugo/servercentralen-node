@@ -27,9 +27,9 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
-      email: {
+      userId: {
         allowNull: true,
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
       },
       replyId: {
         allowNull: true,
@@ -49,6 +49,15 @@ module.exports = {
 
     await queryInterface.addConstraint('price_request', ['replyId'], {
       name: 'fk_price_request_users',
+      type: 'FOREIGN KEY',
+      references: {
+        table: 'users',
+        field: 'id',
+      },
+    });
+
+    await queryInterface.addConstraint('price_request', ['userId'], {
+      name: 'fk_price_request_users_requester',
       type: 'FOREIGN KEY',
       references: {
         table: 'users',

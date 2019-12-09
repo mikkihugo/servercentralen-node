@@ -26,9 +26,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING,
     },
-    email: {
+    userId: {
       allowNull: true,
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
     },
     type: {
       allowNull: true,
