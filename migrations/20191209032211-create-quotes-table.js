@@ -4,6 +4,7 @@ module.exports = {
       stokabPriceId: {
         allowNull: true,
         type: Sequelize.UUID,
+        primaryKey: true,
       },
 
       requestPriceId: {
