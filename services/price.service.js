@@ -1,6 +1,11 @@
 require('dotenv').config();
 
-const { StokabPrice, Quotes } = require('../models');
+const {
+  StokabPrice,
+  Quotes,
+  PriceRequest,
+  PriceRequestDetail,
+} = require('../models');
 
 const InputError = require('../helper/input-error');
 const logger = require('../helper/logger');
@@ -52,6 +57,70 @@ module.exports = {
         err,
       });
       throw new InputError('There is an issue to save stokab price.');
+    }
+  },
+
+  addRequestPrice: async (req) => {
+    const {
+      city, littera, number, postalCode, street, basic, plus, premium,
+    } = req.body;
+
+    if (basic.length === 0 && plus.length === 0 && premium.length === 0) {
+      logger.error({
+        func: 'POST /api/request_price',
+        message: 'Invalid request',
+      });
+      throw new InputError('Invalid request');
+    }
+
+    try {
+      const requestPrice = await PriceRequest.create({
+        city,
+        littera,
+        number,
+        postalCode,
+        street,
+        userId: req.user.id,
+      });
+
+      logger.info({
+        func: 'POST /api/request_price',
+        price: requestPrice,
+      });
+
+      const requestDetail = [];
+      if (basic) {
+        basic.map((speed) => {
+          requestDetail.push({ requestId: requestPrice.id, type: 'basic', speed: Number(speed) });
+          return speed;
+        });
+      }
+
+      if (plus) {
+        plus.map((speed) => {
+          requestDetail.push({ requestId: requestPrice.id, type: 'plus', speed: Number(speed) });
+          return speed;
+        });
+      }
+
+      if (premium) {
+        premium.map((speed) => {
+          requestDetail.push({ requestId: requestPrice.id, type: 'premium', speed: Number(speed) });
+          return speed;
+        });
+      }
+
+      await PriceRequestDetail.bulkCreate(requestDetail);
+
+      return {
+        requestPrice,
+      };
+    } catch (err) {
+      logger.error({
+        func: 'POST /api/request_price',
+        err,
+      });
+      throw new InputError('There is an issue to save request price.');
     }
   },
 };
