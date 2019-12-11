@@ -42,5 +42,14 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'price_request_detail',
   });
 
+  PriceRequestDetail.associate = function (models) {
+    PriceRequestDetail.belongsTo(models.PriceRequest, {
+      foreignKey: 'requestId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+      as: 'requestPrice',
+    });
+  };
+
   return PriceRequestDetail;
 };

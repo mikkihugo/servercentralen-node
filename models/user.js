@@ -105,6 +105,18 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  User.associate = function (models) {
+    User.hasMany(models.PriceRequest, {
+      foreignKey: 'userId',
+      as: 'requestList',
+    });
+
+    User.hasMany(models.PriceRequest, {
+      foreignKey: 'replyId',
+      as: 'replyList',
+    });
+  };
+
   // User.associate = function (models) {
   //   User.belongsToMany(models.Account, {
   //     through: models.AccountToUser,

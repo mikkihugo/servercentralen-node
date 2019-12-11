@@ -1,10 +1,12 @@
 require('dotenv').config();
+const _ = require('lodash');
 
 const {
   StokabPrice,
   Quotes,
   PriceRequest,
   PriceRequestDetail,
+  User,
 } = require('../models');
 
 const InputError = require('../helper/input-error');
@@ -126,6 +128,150 @@ module.exports = {
         err,
       });
       throw new InputError('There is an issue to save request price.');
+    }
+  },
+
+  getRequestPriceList: async (req) => {
+    const currentUser = req.user;
+    if (currentUser.role !== 'admin') {
+      logger.error({
+        func: 'GET /api/request_price',
+        message: 'No permission!',
+      });
+      throw new InputError('No permission!');
+    }
+
+    const {
+      offset = 0, limit = 25,
+    } = req.query;
+
+    const query = {
+      offset: Number(offset || 0),
+      limit: Number(limit || 25),
+      order: [
+        ['createdAt', 'desc'],
+      ],
+      include: [
+        {
+          model: User,
+          attributes: [
+            'id',
+            'firstName',
+            'lastName',
+            'email',
+          ],
+          as: 'requestUser',
+        },
+        {
+          model: User,
+          attributes: [
+            'id',
+            'firstName',
+            'lastName',
+            'email',
+          ],
+          as: 'replyUser',
+        },
+      ],
+    };
+
+    try {
+      const requestList = await PriceRequest.findAndCountAll(query);
+      logger.info({
+        func: 'POST /api/request_price',
+        requestList,
+      });
+      return {
+        offset: Number(offset || 0),
+        count: requestList.count,
+        rows: requestList.rows,
+      };
+    } catch (error) {
+      logger.error({
+        func: 'GET /api/request_price',
+        error,
+      });
+      throw new InputError(error);
+    }
+  },
+
+  getRequestPrice: async (req) => {
+    const currentUser = req.user;
+    if (currentUser.role !== 'admin') {
+      logger.error({
+        func: 'GET /api/request_price',
+        message: 'No permission!',
+      });
+      throw new InputError('No permission!');
+    }
+
+    const requestId = req.params.requestId || '';
+
+    if (!requestId) {
+      logger.error({
+        func: 'GET /api/request_price',
+        message: 'Invalid request',
+      });
+      throw new InputError('Invalid request');
+    }
+
+    const query = {
+      where: {
+        id: requestId,
+      },
+      include: [
+        {
+          model: User,
+          attributes: [
+            'id',
+            'firstName',
+            'lastName',
+            'email',
+          ],
+          as: 'requestUser',
+        },
+        {
+          model: User,
+          attributes: [
+            'id',
+            'firstName',
+            'lastName',
+            'email',
+          ],
+          as: 'replyUser',
+        },
+        {
+          model: PriceRequestDetail,
+          as: 'requestDetailList',
+        },
+      ],
+    };
+
+    try {
+      const requestPrice = await PriceRequest.findOne(query);
+
+      const orderDetailList = _.orderBy(requestPrice.requestDetailList, ['type', 'speed'], ['asc', 'asc'])
+      const result = {
+        ...requestPrice.toJSON(),
+        requestDetailList: orderDetailList,
+      };
+
+      logger.info({
+        func: 'GET /api/request_price',
+        requestId,
+        result,
+      });
+
+      return {
+        requestPrice: result,
+      };
+    } catch (error) {
+      logger.error({
+        func: 'GET /api/request_price',
+        requestId,
+        error,
+      });
+      throw new InputError(error);
     }
   },
 };

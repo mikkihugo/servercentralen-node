@@ -46,5 +46,26 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'price_request',
   });
 
+  PriceRequest.associate = function (models) {
+    PriceRequest.belongsTo(models.User, {
+      foreignKey: 'userId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+      as: 'requestUser',
+    });
+
+    PriceRequest.belongsTo(models.User, {
+      foreignKey: 'replyId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+      as: 'replyUser',
+    });
+
+    PriceRequest.hasMany(models.PriceRequestDetail, {
+      foreignKey: 'requestId',
+      as: 'requestDetailList',
+    });
+  };
+
   return PriceRequest;
 };
