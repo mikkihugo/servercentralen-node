@@ -65,7 +65,12 @@ module.exports = {
       city, littera, number, postalCode, street, basic, plus, premium,
     } = req.body;
 
-    if (basic.length === 0 && plus.length === 0 && premium.length === 0) {
+    let speedLength = 0;
+    speedLength += basic && basic.length;
+    speedLength += plus && plus.length;
+    speedLength += premium && premium.length;
+
+    if (speedLength === 0) {
       logger.error({
         func: 'POST /api/request_price',
         message: 'Invalid request',
