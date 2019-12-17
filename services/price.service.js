@@ -310,17 +310,17 @@ module.exports = {
 
       PriceRequestDetail.bulkCreate(priceList, { updateOnDuplicate: ['id', 'start', 'monthly', 'premises'] });
 
-      // const quote = await Quotes.findOne({
-      //   where: {
-      //     requestPriceId: requestId,
-      //   },
-      // });
+      const quote = await Quotes.findOne({
+        where: {
+          requestPriceId: requestId,
+        },
+      });
 
-      // if (!quote) {
-      //   await Quotes.create({
-      //     requestPriceId: requestId,
-      //   });
-      // }
+      if (!quote) {
+        await Quotes.create({
+          requestPriceId: requestId,
+        });
+      }
 
       return {
         updatedPriceRequest,

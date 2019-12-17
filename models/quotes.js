@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: null,
     },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
   }, {
     tableName: 'quotes',
     timestamps: false,

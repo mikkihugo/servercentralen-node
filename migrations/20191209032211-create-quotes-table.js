@@ -1,15 +1,32 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('quotes', {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+      },
+
       stokabPriceId: {
         allowNull: true,
         type: Sequelize.UUID,
-        primaryKey: true,
       },
 
       requestPriceId: {
         allowNull: true,
         type: Sequelize.UUID,
+      },
+
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
 
