@@ -250,7 +250,7 @@ module.exports = {
     try {
       const requestPrice = await PriceRequest.findOne(query);
 
-      const orderDetailList = _.orderBy(requestPrice.requestDetailList, ['type', 'speed'], ['asc', 'asc'])
+      const orderDetailList = _.orderBy(requestPrice.requestDetailList, ['type', 'speed'], ['asc', 'asc']);
       const result = {
         ...requestPrice.toJSON(),
         requestDetailList: orderDetailList,
@@ -272,6 +272,65 @@ module.exports = {
         error,
       });
       throw new InputError(error);
+    }
+  },
+
+  replyRequestPrice: async (req) => {
+    const {
+      requestId, priceList,
+    } = req.body;
+
+    if (!requestId || !priceList || priceList.length === 0) {
+      logger.error({
+        func: 'POST /api/reply_request_price',
+        message: 'Invalid request',
+      });
+      throw new InputError('Invalid request');
+    }
+
+    try {
+      const priceRequest = await PriceRequest.findOne({
+        where: {
+          id: requestId,
+        },
+      });
+
+      if (!priceRequest) {
+        logger.error({
+          func: 'POST /api/reply_request_price',
+          requestId,
+          message: 'Invalid request id',
+        });
+        throw new InputError('Invalid request id');
+      }
+
+      const updatedPriceRequest = await priceRequest.update({
+        replyId: req.user.id,
+      });
+
+      PriceRequestDetail.bulkCreate(priceList, { updateOnDuplicate: ['id', 'start', 'monthly', 'premises'] });
+
+      // const quote = await Quotes.findOne({
+      //   where: {
+      //     requestPriceId: requestId,
+      //   },
+      // });
+
+      // if (!quote) {
+      //   await Quotes.create({
+      //     requestPriceId: requestId,
+      //   });
+      // }
+
+      return {
+        updatedPriceRequest,
+      };
+    } catch (err) {
+      logger.error({
+        func: 'POST /api/request_price',
+        err,
+      });
+      throw new InputError('There is an issue to save request price.');
     }
   },
 };

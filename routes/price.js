@@ -30,6 +30,15 @@ const initializePriceEndpoints = (app) => {
       return next(err);
     }
   });
+
+  app.post('/api/reply_request_price', async (req, res, next) => {
+    try {
+      const response = await priceService.replyRequestPrice(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
 
 module.exports = initializePriceEndpoints;
