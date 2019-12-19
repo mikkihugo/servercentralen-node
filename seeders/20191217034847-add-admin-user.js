@@ -1,11 +1,14 @@
 const uuidv4 = require('uuid/v4');
+const helper = require('../helper');
 
 module.exports = {
   up: async (queryInterface) => {
+    const password = await helper.encryptPassword('password');
+
     await queryInterface.bulkInsert('users', [{
       id: uuidv4(),
       email: 'admin@gmail.com',
-      password: 'password',
+      password,
       firstName: 'Admin',
       lastName: 'User',
       role: 'admin',

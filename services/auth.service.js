@@ -340,7 +340,7 @@ module.exports = {
       offset: Number(offset || 0),
       limit: Number(limit || 25),
       order: [
-        ['firstName', 'asc'],
+        [['firstName', 'asc'], ['lastName', 'asc']],
       ],
     };
 
