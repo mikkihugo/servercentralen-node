@@ -434,22 +434,25 @@ module.exports = {
   },
 
   getQuote: async (req) => {
+    const {
+      type, id,
+    } = req.query;
+
     const currentUser = req.user;
     if (currentUser.role !== 'admin') {
       logger.error({
-        func: 'GET /api/quotes',
+        func: 'GET /api/quote',
+        type: Number(type) === 0 ? 'Stokab Price' : 'Request Price',
+        id,
         message: 'No permission!',
       });
       throw new InputError('No permission!');
     }
 
-    const {
-      type, id,
-    } = req.query;
-
     if (!id) {
       logger.error({
         func: 'GET /api/quote',
+        type: Number(type) === 0 ? 'Stokab Price' : 'Request Price',
         id,
         message: 'Invalid request',
       });
@@ -524,6 +527,8 @@ module.exports = {
     } catch (err) {
       logger.error({
         func: 'GET /api/quote',
+        type: Number(type) === 0 ? 'Stokab Price' : 'Request Price',
+        id,
         err,
       });
       throw new InputError('There is an issue to get quote.');
