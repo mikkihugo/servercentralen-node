@@ -66,5 +66,19 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'stokab_price',
   });
 
+  StokabPrice.associate = function (models) {
+    StokabPrice.hasOne(models.Quotes, {
+      foreignKey: 'stokabPriceId',
+      as: 'stokabPrice',
+    });
+
+    StokabPrice.belongsTo(models.User, {
+      foreignKey: 'userId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+      as: 'requestUser',
+    });
+  };
+
   return StokabPrice;
 };

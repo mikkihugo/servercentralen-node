@@ -28,5 +28,21 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'quotes',
   });
 
+  Quotes.associate = function (models) {
+    Quotes.belongsTo(models.StokabPrice, {
+      foreignKey: 'stokabPriceId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+      as: 'stokabPrice',
+    });
+
+    Quotes.belongsTo(models.PriceRequest, {
+      foreignKey: 'requestPriceId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+      as: 'requestPrice',
+    });
+  };
+
   return Quotes;
 };

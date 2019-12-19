@@ -178,7 +178,7 @@ module.exports = {
     try {
       const requestList = await PriceRequest.findAndCountAll(query);
       logger.info({
-        func: 'POST /api/request_price',
+        func: 'GET /api/request_price',
         requestList,
       });
       return {
@@ -331,6 +331,202 @@ module.exports = {
         err,
       });
       throw new InputError('There is an issue to save request price.');
+    }
+  },
+
+  getQuotesList: async (req) => {
+    const currentUser = req.user;
+    if (currentUser.role !== 'admin') {
+      logger.error({
+        func: 'GET /api/quotes',
+        message: 'No permission!',
+      });
+      throw new InputError('No permission!');
+    }
+
+    const {
+      offset = 0, limit = 25,
+    } = req.query;
+
+    const query = {
+      offset: Number(offset || 0),
+      limit: Number(limit || 25),
+      order: [
+        ['createdAt', 'desc'],
+      ],
+      include: [
+        {
+          model: PriceRequest,
+          attributes: [
+            'street',
+            'number',
+            'city',
+            'littera',
+            'postalCode',
+          ],
+          as: 'requestPrice',
+          include: [
+            {
+              model: User,
+              attributes: [
+                'id',
+                'firstName',
+                'lastName',
+                'email',
+              ],
+              as: 'requestUser',
+            },
+            {
+              model: PriceRequestDetail,
+              as: 'requestDetailList',
+            },
+          ],
+        },
+        {
+          model: StokabPrice,
+          attributes: [
+            'street',
+            'number',
+            'city',
+            'littera',
+            'postalCode',
+            'type',
+            'isRedundant',
+            'isPremise',
+            'monthly',
+            'start',
+          ],
+          as: 'stokabPrice',
+          include: [
+            {
+              model: User,
+              attributes: [
+                'id',
+                'firstName',
+                'lastName',
+                'email',
+              ],
+              as: 'requestUser',
+            },
+          ],
+        },
+      ],
+    };
+
+    try {
+      const quotesList = await Quotes.findAndCountAll(query);
+      logger.info({
+        func: 'GET /api/quotes',
+        quotesList,
+      });
+      return {
+        offset: Number(offset || 0),
+        count: quotesList.count,
+        rows: quotesList.rows,
+      };
+    } catch (error) {
+      logger.error({
+        func: 'GET /api/quotes',
+        error,
+      });
+      throw new InputError(error);
+    }
+  },
+
+  getQuote: async (req) => {
+    const currentUser = req.user;
+    if (currentUser.role !== 'admin') {
+      logger.error({
+        func: 'GET /api/quotes',
+        message: 'No permission!',
+      });
+      throw new InputError('No permission!');
+    }
+
+    const {
+      type, id,
+    } = req.query;
+
+    if (!id) {
+      logger.error({
+        func: 'GET /api/quote',
+        id,
+        message: 'Invalid request',
+      });
+      throw new InputError('Invalid request');
+    }
+    let quote = null;
+    try {
+      if (Number(type) === 0) {
+        const query = {
+          where: {
+            id,
+          },
+          include: [
+            {
+              model: User,
+              attributes: [
+                'id',
+                'firstName',
+                'lastName',
+                'email',
+              ],
+              as: 'requestUser',
+            },
+          ],
+        };
+
+        quote = await StokabPrice.findOne(query);
+      } else {
+        const query = {
+          where: {
+            id,
+          },
+          include: [
+            {
+              model: User,
+              attributes: [
+                'id',
+                'firstName',
+                'lastName',
+                'email',
+              ],
+              as: 'requestUser',
+            },
+            {
+              model: User,
+              attributes: [
+                'id',
+                'firstName',
+                'lastName',
+                'email',
+              ],
+              as: 'replyUser',
+            },
+            {
+              model: PriceRequestDetail,
+              as: 'requestDetailList',
+            },
+          ],
+        };
+
+        const requestPrice = await PriceRequest.findOne(query);
+
+        const orderDetailList = _.orderBy(requestPrice.requestDetailList, ['type', 'speed'], ['asc', 'asc']);
+        quote = {
+          ...requestPrice.toJSON(),
+          requestDetailList: orderDetailList,
+        };
+      }
+      return {
+        quote,
+      };
+    } catch (err) {
+      logger.error({
+        func: 'GET /api/quote',
+        err,
+      });
+      throw new InputError('There is an issue to get quote.');
     }
   },
 };

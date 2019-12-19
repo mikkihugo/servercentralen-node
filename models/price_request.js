@@ -65,6 +65,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'requestId',
       as: 'requestDetailList',
     });
+
+    PriceRequest.hasOne(models.Quotes, {
+      foreignKey: 'requestPriceId',
+      as: 'requestPrice',
+    });
   };
 
   return PriceRequest;

@@ -39,6 +39,24 @@ const initializePriceEndpoints = (app) => {
       return next(err);
     }
   });
+
+  app.get('/api/quotes', async (req, res, next) => {
+    try {
+      const response = await priceService.getQuotesList(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.get('/api/quote', async (req, res, next) => {
+    try {
+      const response = await priceService.getQuote(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
 
 module.exports = initializePriceEndpoints;
