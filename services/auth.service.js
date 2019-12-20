@@ -342,6 +342,7 @@ module.exports = {
       order: [
         [['firstName', 'asc'], ['lastName', 'asc']],
       ],
+      distinct: true,
     };
 
     const users = await User.findAndCountAll(query);

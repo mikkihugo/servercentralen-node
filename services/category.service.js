@@ -211,6 +211,7 @@ module.exports = {
       order: [
         ['category_name', 'asc'],
       ],
+      distinct: true,
     };
 
     const categories = await ProdCategory.findAndCountAll(query);

@@ -173,6 +173,7 @@ module.exports = {
           as: 'replyUser',
         },
       ],
+      distinct: true,
     };
 
     try {
@@ -411,6 +412,7 @@ module.exports = {
           ],
         },
       ],
+      distinct: true,
     };
 
     try {
