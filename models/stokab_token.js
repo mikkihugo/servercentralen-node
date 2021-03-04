@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     token: {
       allowNull: false,
-      primaryKey: true,
       type: DataTypes.STRING,
     },
     expires_in: {

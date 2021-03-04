@@ -52,6 +52,7 @@ const createToken = async () => {
     });
   } catch (error) {
     token = '';
+
     logger.info({
       func: 'GET /createToken',
       name: 'Create Token',
@@ -72,6 +73,7 @@ const fetchFeasibilityAddress = async () => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -86,6 +88,7 @@ const fetchAvailabilityByPointId = async (pointId) => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -100,6 +103,7 @@ const fetchAvailabilityByEstate = async (realestate, estatesuffix) => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -114,6 +118,7 @@ const fetchAvailabilityByAddress = async (city, street, number) => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -129,6 +134,7 @@ const priceEstimate = async (data) => {
     url,
     data,
   });
+
   return response.data;
 };
 
@@ -144,6 +150,7 @@ const offerInquiry = async (data) => {
     url,
     data,
   });
+
   return response.data;
 };
 
@@ -158,6 +165,7 @@ const fetchOfferInquiry = async (inquiryId) => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -173,6 +181,7 @@ const order = async (data) => {
     url,
     data,
   });
+
   return response.data;
 };
 
@@ -187,6 +196,7 @@ const fetchOrder = async (orderId) => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -201,6 +211,7 @@ const fetchInvoiceGroup = async () => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -215,6 +226,7 @@ const fetchFrameworkAgreement = async () => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -229,6 +241,7 @@ const fetchProducts = async () => {
     headers,
     url,
   });
+
   return response.data;
 };
 
@@ -243,11 +256,13 @@ const fetchEmployees = async () => {
     headers,
     url,
   });
+
   return response.data;
 };
 
 const reCreateToken = async () => {
   await createToken();
+
   logger.info({
     func: 'GET /reCreateToken',
     message: `Token is re-created successfully - ${token}`,
@@ -276,6 +291,7 @@ module.exports = {
         func: 'GET /api/stokab/feasibility',
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -283,22 +299,26 @@ module.exports = {
         const response = await fetchFeasibilityAddress();
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/feasibility',
         error,
       });
-      return error.response.data || error.response;
+
+      throw error
     }
   },
 
   fetchAvailabilityByPointId: async (pointId) => {
     try {
       const response = await fetchAvailabilityByPointId(pointId);
+
       logger.info({
         func: 'GET /api/stokab/getAvailabilityByPointId',
         pointId,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -306,24 +326,28 @@ module.exports = {
         const response = await fetchAvailabilityByPointId(pointId);
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/getAvailabilityByPointId',
         pointId,
         error,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
   fetchAvailabilityByEstate: async (realestate, estatesuffix) => {
     try {
       const response = await fetchAvailabilityByEstate(realestate, estatesuffix);
+
       logger.info({
         func: 'GET /api/stokab/getAvailabilityByEstate',
         realestate,
         estatesuffix,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -331,19 +355,22 @@ module.exports = {
         const response = await fetchAvailabilityByEstate(realestate, estatesuffix);
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/getAvailabilityByEstate',
         realestate,
         estatesuffix,
         error,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
   fetchAvailabilityByAddress: async (city, street, number) => {
     try {
       const response = await fetchAvailabilityByAddress(city, street, number);
+
       logger.info({
         func: 'GET /api/stokab/getAvailabilityByAddress',
         city,
@@ -351,6 +378,7 @@ module.exports = {
         number,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -358,6 +386,7 @@ module.exports = {
         const response = await fetchAvailabilityByAddress(city, street, number);
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/getAvailabilityByAddress',
         city,
@@ -365,7 +394,8 @@ module.exports = {
         number,
         error,
       });
-      return error.response.data || error.response;
+
+      throw error
     }
   },
 
@@ -387,11 +417,13 @@ module.exports = {
 
     try {
       const response = await priceEstimate(data);
+
       logger.info({
         func: 'POST /api/stokab/priceEstimate',
         data,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -399,12 +431,14 @@ module.exports = {
         const response = await priceEstimate(data);
         return response;
       }
+
       logger.error({
         func: 'POST /api/stokab/priceEstimate',
         data,
         error: error.response.data,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
@@ -443,11 +477,13 @@ module.exports = {
 
     try {
       const response = await offerInquiry(data);
+
       logger.info({
         func: 'POST /api/stokab/offerInquiry',
         data,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -455,12 +491,14 @@ module.exports = {
         const response = await offerInquiry(data);
         return response;
       }
+
       logger.error({
         func: 'POST /api/stokab/offerInquiry',
         data,
         error: error.response.data,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
@@ -471,17 +509,20 @@ module.exports = {
         inquiryId,
         message: 'Invalid request',
       });
+
       throw new InputError('Invalid request');
     }
 
     try {
       const response = await fetchOfferInquiry(inquiryId);
+
       logger.info({
         func: 'GET /api/stokab/offerInquiry',
         inquiryId,
         response,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -489,12 +530,14 @@ module.exports = {
         const response = await fetchOfferInquiry(inquiryId);
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/offerInquiry',
         inquiryId,
         error: error.response.data,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
@@ -519,11 +562,13 @@ module.exports = {
 
     try {
       const response = await order(data);
+
       logger.info({
         func: 'POST /api/stokab/order',
         data,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -531,11 +576,13 @@ module.exports = {
         const response = await order(data);
         return response;
       }
+
       logger.error({
         func: 'POST /api/stokab/order',
         data,
         error: error.response.data,
       });
+
       return error.response.data || error.response;
     }
   },
@@ -547,17 +594,20 @@ module.exports = {
         orderId,
         message: 'Invalid request',
       });
+
       throw new InputError('Invalid request');
     }
 
     try {
       const response = await fetchOrder(orderId);
+
       logger.info({
         func: 'GET /api/stokab/order',
         orderId,
         response,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -565,23 +615,27 @@ module.exports = {
         const response = await fetchOrder(orderId);
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/order',
         orderId,
         error: error.response.data,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
   fetchInvoiceGroup: async () => {
     try {
       const response = await fetchInvoiceGroup();
+
       logger.info({
         func: 'GET /api/stokab/invoiceGroup',
         response,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -589,22 +643,26 @@ module.exports = {
         const response = await fetchInvoiceGroup();
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/invoiceGroup',
         error: error.response.data,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
   fetchFrameworkAgreement: async () => {
     try {
       const response = await fetchFrameworkAgreement();
+
       logger.info({
         func: 'GET /api/stokab/frameworkAgreement',
         response,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -612,22 +670,26 @@ module.exports = {
         const response = await fetchFrameworkAgreement();
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/frameworkAgreement',
         error: error.response.data,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
   fetchProducts: async () => {
     try {
       const response = await fetchProducts();
+
       logger.info({
         func: 'GET /api/stokab/products',
         response,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -635,22 +697,26 @@ module.exports = {
         const response = await fetchProducts();
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/products',
         error: error.response.data,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 
   fetchEmployees: async () => {
     try {
       const response = await fetchEmployees();
+
       logger.info({
         func: 'GET /api/stokab/employee',
         response,
         message: 'Success',
       });
+
       return response;
     } catch (error) {
       if (error && error.response && error.response.status === 401) {
@@ -658,11 +724,13 @@ module.exports = {
         const response = await fetchEmployees();
         return response;
       }
+
       logger.error({
         func: 'GET /api/stokab/employee',
         error: error.response.data,
       });
-      return error.response.data || error.response;
+
+      throw error;
     }
   },
 };
