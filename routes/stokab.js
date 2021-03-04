@@ -106,6 +106,24 @@ const initializeStokabEndpoints = (app) => {
       return next(err);
     }
   });
+
+  app.get('/api/stokab/product', async (req, res, next) => {
+    try {
+      const response = await stokabService.fetchProducts();
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.get('/api/stokab/employee', async (req, res, next) => {
+    try {
+      const response = await stokabService.fetchEmployees();
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
 
 module.exports = initializeStokabEndpoints;

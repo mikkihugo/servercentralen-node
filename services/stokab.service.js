@@ -218,6 +218,34 @@ const fetchFrameworkAgreement = async () => {
   return response.data;
 };
 
+const fetchProducts = async () => {
+  const url = `${API_URL}/api/1.5/product`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios({
+    method: 'GET',
+    headers,
+    url,
+  });
+  return response.data;
+};
+
+const fetchEmployees = async () => {
+  const url = `${API_URL}/api/1.5/employee`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios({
+    method: 'GET',
+    headers,
+    url,
+  });
+  return response.data;
+};
+
 const reCreateToken = async () => {
   await createToken();
   logger.info({
@@ -586,6 +614,52 @@ module.exports = {
       }
       logger.error({
         func: 'GET /api/stokab/frameworkAgreement',
+        error: error.response.data,
+      });
+      return error.response.data || error.response;
+    }
+  },
+
+  fetchProducts: async () => {
+    try {
+      const response = await fetchProducts();
+      logger.info({
+        func: 'GET /api/stokab/products',
+        response,
+        message: 'Success',
+      });
+      return response;
+    } catch (error) {
+      if (error && error.response && error.response.status === 401) {
+        await reCreateToken();
+        const response = await fetchProducts();
+        return response;
+      }
+      logger.error({
+        func: 'GET /api/stokab/products',
+        error: error.response.data,
+      });
+      return error.response.data || error.response;
+    }
+  },
+
+  fetchEmployees: async () => {
+    try {
+      const response = await fetchEmployees();
+      logger.info({
+        func: 'GET /api/stokab/employee',
+        response,
+        message: 'Success',
+      });
+      return response;
+    } catch (error) {
+      if (error && error.response && error.response.status === 401) {
+        await reCreateToken();
+        const response = await fetchEmployees();
+        return response;
+      }
+      logger.error({
+        func: 'GET /api/stokab/employee',
         error: error.response.data,
       });
       return error.response.data || error.response;
