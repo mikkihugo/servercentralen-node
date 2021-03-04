@@ -31,13 +31,13 @@ const createToken = async () => {
     });
     token = response.data.access_token;
     logger.info({
-      func: 'GET /api/getByAddress',
+      func: 'GET /createToken',
       message: `Token is created successfully - ${token}`,
     });
   } catch (error) {
     token = '';
     logger.info({
-      func: 'GET /api/getByAddress',
+      func: 'GET /createToken',
       name: 'Create Token',
       status: error.response.status,
       message: error.response.message,
@@ -46,7 +46,7 @@ const createToken = async () => {
 };
 
 const fetchFeasibilityAddress = async () => {
-  const url = `${API_URL}/api/1.3/feasibility`;
+  const url = `${API_URL}/api/1.5/feasibility`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -60,7 +60,7 @@ const fetchFeasibilityAddress = async () => {
 };
 
 const fetchAvailabilityByPointId = async (pointId) => {
-  const url = `${API_URL}/api/1.3/availability/GetByPointId?pointId=${pointId}`;
+  const url = `${API_URL}/api/1.5/availability/GetByPointId?pointId=${pointId}`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -74,7 +74,7 @@ const fetchAvailabilityByPointId = async (pointId) => {
 };
 
 const fetchAvailabilityByEstate = async (realestate, estatesuffix) => {
-  const url = `${API_URL}/api/1.3/availability/GetByEstate?realestate=${realestate}&estatesuffix=${estatesuffix}`;
+  const url = `${API_URL}/api/1.5/availability/GetByEstate?realestate=${realestate}&estatesuffix=${estatesuffix}`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -88,7 +88,7 @@ const fetchAvailabilityByEstate = async (realestate, estatesuffix) => {
 };
 
 const fetchAvailabilityByAddress = async (city, street, number) => {
-  const url = `${API_URL}/api/1.3/availability/GetByAddress?city=${city}&street=${street}&number=${number}`;
+  const url = `${API_URL}/api/1.5/availability/GetByAddress?city=${city}&street=${street}&number=${number}`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -102,7 +102,7 @@ const fetchAvailabilityByAddress = async (city, street, number) => {
 };
 
 const priceEstimate = async (data) => {
-  const url = `${API_URL}/api/1.3/priceEstimate`;
+  const url = `${API_URL}/api/1.5/priceEstimate`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -117,7 +117,7 @@ const priceEstimate = async (data) => {
 };
 
 const offerInquiry = async (data) => {
-  const url = `${API_URL}/api/1.3/offerInquiry`;
+  const url = `${API_URL}/api/1.5/offerInquiry`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -132,7 +132,7 @@ const offerInquiry = async (data) => {
 };
 
 const fetchOfferInquiry = async (inquiryId) => {
-  const url = `${API_URL}/api/1.3/offerInquiry/${inquiryId}`;
+  const url = `${API_URL}/api/1.5/offerInquiry/${inquiryId}`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -146,7 +146,7 @@ const fetchOfferInquiry = async (inquiryId) => {
 };
 
 const order = async (data) => {
-  const url = `${API_URL}/api/1.3/order`;
+  const url = `${API_URL}/api/1.5/order`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -161,7 +161,7 @@ const order = async (data) => {
 };
 
 const fetchOrder = async (orderId) => {
-  const url = `${API_URL}/api/1.3/order/${orderId}`;
+  const url = `${API_URL}/api/1.5/order/${orderId}`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -175,7 +175,7 @@ const fetchOrder = async (orderId) => {
 };
 
 const fetchInvoiceGroup = async () => {
-  const url = `${API_URL}/api/1.3/invoiceGroup`;
+  const url = `${API_URL}/api/1.5/invoiceGroup`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -189,7 +189,7 @@ const fetchInvoiceGroup = async () => {
 };
 
 const fetchFrameworkAgreement = async () => {
-  const url = `${API_URL}/api/1.3/frameworkAgreement`;
+  const url = `${API_URL}/api/1.5/frameworkAgreement`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -205,7 +205,7 @@ const fetchFrameworkAgreement = async () => {
 const reCreateToken = async () => {
   await createToken();
   logger.info({
-    func: 'GET /api/getByAddress',
+    func: 'GET /reCreateToken',
     message: `Token is re-created successfully - ${token}`,
   });
 };
@@ -216,7 +216,7 @@ module.exports = {
     // eslint-disable-next-line max-len
     // eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2QTFCNEExNTYwMTQyQUU5OTRCOTNBRjE1NUFGMjUxNjQ5MzUyMUUiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJocUcwb1ZZQlFxNlpTNU92RlZyeVVXU1RVaDQifQ.eyJuYmYiOjE1NzI5MjQ4MDMsImV4cCI6MTU3Mjk0MTYwMywiaXNzIjoiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UiLCJhdWQiOlsiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UvcmVzb3VyY2VzIiwiU3Rva2FiX2FwaSJdLCJjbGllbnRfaWQiOiJOU0MiLCJBY2NvdW50VXNlcklkIjoiNTU2NzY3LTY0NzIiLCJzY29wZSI6WyJTdG9rYWJfYXBpLmFjY2Vzc2xldmVsMyIsIlN0b2thYl9hcGkuYXV0aG9yaXR5Il19.Q1iV4Q2Tk7kx5y3IauudhmPMtUj8mz0Dgjx0wkPhqmL92COdfkqk-FV_4iTT-f7AMitIbd1-qFfLIUTjj1zSVr2SmcI0gKbhT84qosx4jFGmWv_qRkujoHliRoexPhQMBvoyVvDBOZle9Ep3Oxg-KwgB5aS5Q7P7ra1uJ-Ycq01EgnvpiErn6TJb-JbJfqkPS9M7wPegU8d7ScCjbzIb71NPeK_yKz6PM6UPChHMpfx0MOVfVa6urys7plaoHHhYthn9Ls_j2VTVrHrTkiYs7TNzS8c7ZA-CbtF8JANZCjSGoEwqpY7FoUKzNkjQkhQ1Lzel-joaME05mAThQxcXnYxgJJr6e8FTPGsSZL-Z3XFJeGtsztVo5b_i02gm3M787s7J-PB4lwKFj4JzTytelU2V1eCMj4_XRgAUGjhWMnfh6KXcCTUVYEID-GvlgXvLCJQptZXLksiB_KfUvlDbG9m9kTCclvD7xrayQo6sixihI3BV0YFXv3Vm_ey8iWptgzcGT-sr_F8YX3p4UzdXUibuZhOqWVdP_Cap7v1Aj-Pz9Jc7uvuHSpXaCMLyVxuudepG4OwtZoNC0BXnV3P-miyKAXkPlnOR27hZ0NwLWPBP660DafwQ7adAId1ltKq7qWQNjyEjUeAAa4AZbITb90wnB2h6Uxh4OgQTcuBAmb4
     // eslint-disable-next-line max-len
-    token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2QTFCNEExNTYwMTQyQUU5OTRCOTNBRjE1NUFGMjUxNjQ5MzUyMUUiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJocUcwb1ZZQlFxNlpTNU92RlZyeVVXU1RVaDQifQ.eyJuYmYiOjE1NzY3MjM3NjAsImV4cCI6MTU3Njc0MDU2MCwiaXNzIjoiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UiLCJhdWQiOlsiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UvcmVzb3VyY2VzIiwiU3Rva2FiX2FwaSJdLCJjbGllbnRfaWQiOiJOU0MiLCJBY2NvdW50VXNlcklkIjoiNTU2NzY3LTY0NzIiLCJzY29wZSI6WyJTdG9rYWJfYXBpLmFjY2Vzc2xldmVsMyIsIlN0b2thYl9hcGkuYXV0aG9yaXR5Il19.VrS09PP4TA2fQFsgupLRnbbwZVYAX1t6aahbcurhhQ2ewfI6Y7D3NP4sBAELCUqR6sW1uc61fiAnW2O_V8VfW-W5Eq7yMsKfzS0eKOQXbkW0AfZg1sAmuZePPBfJ5cqzOiazZr0xp6_Goi-NhVURsrTsoAL0dZJ029grgkitLuf_qnltKOgkaBWPJ1_U8m76rio2EZ5RWSD7Evn2k9IgSHroq_Lx16LuQ2RgjvIe5-VIsO4NbNO_UaKHKQu88bYLXrvNe6A30ql8mGdMOcCiE1FYkXoK5IJ3NeEcWmn9U_yNAn8b1Cl4IhC8bCg4jxCM2x3LwOWPioYt6EhoCAGk84bSJQwas5LKT7qaRYauGOQ5SrqYTtD_6YXce2lYWhg-Hvv1Ikk4COzY6np5QzuA3uaRW8IXIohKLsfu80sPnw8ihf9uyaJoNGP4vGU3wTVpaeI8NcfMyWsQImjyu8vzxCXIJu40bac8t782Zoh4V1E_Jx8Fr5whxKH2tuI2kheqpLKObAWk-_KD7vIXzB7wBOeWTQ4xNqRb3TlDfGngFGsYI3mnizIHeROXvQS56-EjlbxlbLOXkpzCvNr8QcXoSEtuOY1e_rirxpsP-UF3y_zJqLLa8d5BO78XD94WBN-XtQAUM-IcIZ8EIdc8-eQOvDK6iThO45JLF1cp8JgAESE';
+    token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2QTFCNEExNTYwMTQyQUU5OTRCOTNBRjE1NUFGMjUxNjQ5MzUyMUUiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJocUcwb1ZZQlFxNlpTNU92RlZyeVVXU1RVaDQifQ.eyJuYmYiOjE1NzI5MjQ4MDMsImV4cCI6MTU3Mjk0MTYwMywiaXNzIjoiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UiLCJhdWQiOlsiaHR0cHM6Ly90c2QwMS5zdG9rYWIuc2UvcmVzb3VyY2VzIiwiU3Rva2FiX2FwaSJdLCJjbGllbnRfaWQiOiJOU0MiLCJBY2NvdW50VXNlcklkIjoiNTU2NzY3LTY0NzIiLCJzY29wZSI6WyJTdG9rYWJfYXBpLmFjY2Vzc2xldmVsMyIsIlN0b2thYl9hcGkuYXV0aG9yaXR5Il19.Q1iV4Q2Tk7kx5y3IauudhmPMtUj8mz0Dgjx0wkPhqmL92COdfkqk-FV_4iTT-f7AMitIbd1-qFfLIUTjj1zSVr2SmcI0gKbhT84qosx4jFGmWv_qRkujoHliRoexPhQMBvoyVvDBOZle9Ep3Oxg-KwgB5aS5Q7P7ra1uJ-Ycq01EgnvpiErn6TJb-JbJfqkPS9M7wPegU8d7ScCjbzIb71NPeK_yKz6PM6UPChHMpfx0MOVfVa6urys7plaoHHhYthn9Ls_j2VTVrHrTkiYs7TNzS8c7ZA-CbtF8JANZCjSGoEwqpY7FoUKzNkjQkhQ1Lzel-joaME05mAThQxcXnYxgJJr6e8FTPGsSZL-Z3XFJeGtsztVo5b_i02gm3M787s7J-PB4lwKFj4JzTytelU2V1eCMj4_XRgAUGjhWMnfh6KXcCTUVYEID-GvlgXvLCJQptZXLksiB_KfUvlDbG9m9kTCclvD7xrayQo6sixihI3BV0YFXv3Vm_ey8iWptgzcGT-sr_F8YX3p4UzdXUibuZhOqWVdP_Cap7v1Aj-Pz9Jc7uvuHSpXaCMLyVxuudepG4OwtZoNC0BXnV3P-miyKAXkPlnOR27hZ0NwLWPBP660DafwQ7adAId1ltKq7qWQNjyEjUeAAa4AZbITb90wnB2h6Uxh4OgQTcuBAmb4';
   },
 
   fetchFeasibilityAddress: async () => {
