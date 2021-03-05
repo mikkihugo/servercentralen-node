@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const MemoryStore = require('memorystore')(session);
+
 const path = require('path');
 const bodyParser = require('body-parser');
 
@@ -35,6 +37,10 @@ app.use(helper.cors);
 // initialize session to store quality
 app.enable('trust proxy');
 app.use(session({
+  cookie: { maxAge: 86400000 },
+  store: new MemoryStore({
+    checkPeriod: 86400000 // prune expired entries every 24h
+  }),
   secret: process.env.SESSION_SECRET || 'servercentralen-session-scecret',
   resave: false,
   saveUninitialized: false,
