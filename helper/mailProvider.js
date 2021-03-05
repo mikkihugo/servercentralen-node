@@ -12,7 +12,7 @@ module.exports = {
     const emailTemplate = `
       Dear, ${name}, <br /><br />
 
-      Thanks you for signing up woth ServerCentralen! We hope you enjoy your time with us.<br />
+      Thanks you for signing up woth Servercentralen! We hope you enjoy your time with us.<br />
       Check your account and update your profile.<br /><br />
       If you have any questions, just reply to this email--we are always happy to help out.<br /><br />
 
