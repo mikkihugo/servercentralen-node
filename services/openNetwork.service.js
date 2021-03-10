@@ -3,6 +3,8 @@ const axios = require('axios');
 
 const logger = require('../helper/logger');
 
+const { sequelize, Access } = require('../models');
+
 const OPEN_NETWORK_API_URL = 'https://ispportal.seom.se/api/onapi/2.4';
 
 const fetchAllAccesses = async () => {
@@ -27,6 +29,48 @@ const fetchAllAccesses = async () => {
 };
 
 module.exports = {
+  uploadAccessCSV: async (req, records) => {
+    const headerKey = Object.keys(records[0])[0]
+
+    try {
+      const headerKeys = headerKey.trim().split(';')
+      let accesses = []
+
+      for (const row of records) {
+        const values = row[headerKey].split(';')
+
+        let access = {}
+        for (const [index, key] of Object.entries(headerKeys)) {
+          access[key] = values[index]
+        }
+
+        accesses.push(access)
+      }
+
+      let count = 0
+      const transaction = await sequelize.transaction()
+      await Access.destroy({ truncate: true }, { transaction: transaction })
+
+      while (accesses.length > 0) {
+        const testData = accesses.splice(0, 5000);
+        await Access.bulkCreate(testData, { transaction: transaction });
+
+        count += testData.length
+      }
+
+      await transaction.commit();
+
+      return count
+    } catch (error) {
+      logger.error({
+        func: 'GET /api/openNetwork/update_accesses',
+        error,
+      });
+
+      throw error
+    }
+  },
+
   updateAccesses: async (req) => {
     try {
       const response = await fetchAllAccesses();
