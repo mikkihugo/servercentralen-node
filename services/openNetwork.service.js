@@ -11,11 +11,16 @@ const fetchAllAccesses = async () => {
   const response = await axios({
     method: 'GET',
     responseType: 'json',
+    headers: {
+      'content-type': 'application/json'
+    },
     auth: {
       username: process.env.OPEN_NETWORK_USER_ID,
       password: process.env.OPEN_NETWORK_USER_PASSWORD,
     },
     url,
+    maxContentLength: 1000000000,
+    maxBodyLength: 1000000000,
   });
 
   return response.data;
@@ -25,6 +30,7 @@ module.exports = {
   updateAccesses: async (req) => {
     try {
       const response = await fetchAllAccesses();
+
       logger.info({
         func: 'POST /api/openNetwork/update_accesses',
         message: 'get all access usign 3rd api',
@@ -32,10 +38,7 @@ module.exports = {
         type: typeof response,
       });
 
-
-      return {
-        success: true,
-      };
+      return response;
     } catch (error) {
       logger.error({
         func: 'GET /api/openNetwork/update_accesses',
