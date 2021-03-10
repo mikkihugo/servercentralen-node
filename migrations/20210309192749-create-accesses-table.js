@@ -8,7 +8,7 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       accessId: {
-        allowNull: false,
+        allowNull: null,
         type: Sequelize.STRING,
       },
       legacyAccessId: {

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
     },
     accessId: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
     },
     legacyAccessId: {

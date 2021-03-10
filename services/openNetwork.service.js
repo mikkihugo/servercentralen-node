@@ -41,7 +41,13 @@ module.exports = {
 
         let access = {}
         for (const [index, key] of Object.entries(headerKeys)) {
-          access[key] = values[index]
+          const value = values[index]
+
+          if (value.slice(0, 1) == '"' && value.slice(-1) == '"') {
+            access[key] = value.slice(1, -1)
+          } else {
+            access[key] = values[index]
+          }
         }
 
         accesses.push(access)
