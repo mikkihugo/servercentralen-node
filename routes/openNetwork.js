@@ -29,7 +29,6 @@ const initializeOpenNetworkEndpoints = (app) => {
         count,
       });
     } catch (err) {
-      console.log(err)
       return next(err);
     }
   });
@@ -43,14 +42,18 @@ const initializeOpenNetworkEndpoints = (app) => {
     }
   });
 
-  app.get('/api/openNetwork/getAccesses', async (req, res, next) => {
+  app.get('/api/openNetwork/lastUpdated', async (req, res, next) => {
     try {
-      const response = await openNetworkService.fetchAccessesByAddress(
-        // encodeURIComponent(req.query.city),
-        // encodeURIComponent(req.query.street),
-        // encodeURIComponent(req.query.number),
-        req
-      );
+      const response = await openNetworkService.getLastUpdated(req);
+      return res.json(response);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  app.get('/api/openNetwork/getAccessesByAddress', async (req, res, next) => {
+    try {
+      const response = await openNetworkService.fetchAccessesByAddress(req);
 
       if (response.status) {
         return next(response);
@@ -58,6 +61,7 @@ const initializeOpenNetworkEndpoints = (app) => {
 
       return res.json(response);
     } catch (err) {
+      console.log(err)
       return next(err);
     }
   });

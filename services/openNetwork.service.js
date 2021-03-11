@@ -1,7 +1,9 @@
 require('dotenv').config();
 const axios = require('axios');
+const Sequelize = require('sequelize');
 
 const logger = require('../helper/logger');
+const InputError = require('../helper/input-error');
 
 const { sequelize, Access } = require('../models');
 
@@ -69,7 +71,7 @@ module.exports = {
       return count
     } catch (error) {
       logger.error({
-        func: 'GET /api/openNetwork/update_accesses',
+        func: 'GET /api/openNetwork/uploadCSV',
         error,
       });
 
@@ -99,48 +101,74 @@ module.exports = {
     }
   },
 
+  getLastUpdated: async (req) => {
+    try {
+      const access = await Access.findOne({
+        order: [['createdAt', 'desc']]
+      });
+
+      return {
+        lastUpdateDate: access && access.createdAt
+      }
+    } catch (err) {
+      logger.error({
+        func: 'GET /api/openNetwork/lastUpdated',
+        error,
+      });
+
+      throw err
+    }
+  },
+
   fetchAccessesByAddress: async (req) => {
-    // const currentUser = req.user;
-    // if (currentUser.role !== 'admin') {
-    //   logger.error({
-    //     func: 'GET /api/user/list',
-    //     message: 'No permission!',
-    //   });
-    //   throw new InputError('No permission!');
-    // }
+    try {
+      const city = req.query.city;
+      const street = req.query.street;
+      const streetNumber = req.query.number;
 
-    const {
-      offset = 0, limit = 25,
-    } = req.query;
+      const {
+        offset = 0, limit = 25,
+      } = req.query;
 
-    // const query = {
-    //   where: {
-    //     role: 'user',
-    //   },
-    //   attributes: [
-    //     'id',
-    //     'firstName',
-    //     'lastName',
-    //     'email',
-    //     'isActive',
-    //     'isClosed',
-    //     'role',
-    //     'createdAt',
-    //     'updatedAt',
-    //   ],
-    //   offset: Number(offset || 0),
-    //   limit: Number(limit || 25),
-    //   order: [
-    //     [['firstName', 'asc'], ['lastName', 'asc']],
-    //   ],
-    //   distinct: true,
-    // };
+      if (!city && !street && !streetNumber) {
+        throw new InputError('Invalid request');
+      }
 
-    // const users = await User.findAndCountAll(query);
-    return {
-      offset: Number(offset || 0),
-      count: 2,
-      rows: [],
-    };
+      let queryCriteria = {};
+
+
+      if (city) {
+        queryCriteria.city = city
+      }
+
+      if (street) {
+        queryCriteria.streetName = street
+      }
+
+      if (streetNumber) {
+        queryCriteria.streetNumber = streetNumber
+      }
+
+      const query = {
+        where: queryCriteria,
+        offset: Number(offset || 0),
+        limit: Number(limit || 25),
+      };
+
+      const accesses = await Access.findAndCountAll(query);
+
+      return {
+        offset: Number(offset || 0),
+        count: accesses.count,
+        rows: accesses.rows,
+      };
+    } catch (err) {
+      logger.error({
+        func: 'GET /api/openNetwork/getAccessesByAddress',
+        err,
+      });
+
+      throw err
+    }
   },
 }
