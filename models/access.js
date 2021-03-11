@@ -99,7 +99,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
     },
   }, {
-    tableName: 'Access',
+    tableName: 'access',
   });
 
   return Access;
