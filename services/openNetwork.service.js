@@ -74,7 +74,7 @@ module.exports = {
         func: 'GET /api/openNetwork/uploadCSV',
         error,
       });
-
+      console.log(error);
       throw error
     }
   },
