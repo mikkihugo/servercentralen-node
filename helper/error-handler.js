@@ -4,13 +4,24 @@ const errorHandler = (err, req, res, next) => {
     // custom application error
     return res.status(400).json({ message: err.message });
   }
+
   if (err.name === 'UnauthorizedError') {
     // authorization error
-    return res.status(401).json({ message: 'invalid token' });
+    return res.status(401).json({ message: 'Unauthorized token' });
   }
+
+  if (err.code && err.code === 'ETIMEDOUT') {
+    res
+      .status(408)
+      .send({
+        status: 408,
+        message: 'Timeout error'
+      });
+  }
+
   // default to 500 server error
   if (err && err.response) {
-    return res.status(500).json({
+    return res.status(err.response.status).json({
       status: err.response.status,
       message: err.response.statusText,
     });

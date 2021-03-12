@@ -6,6 +6,7 @@ const MemoryStore = require('memorystore')(session);
 const path = require('path');
 const bodyParser = require('body-parser');
 
+const config = require('./config/config.js');
 const endpoints = require('./routes');
 const stokabService = require('./services/stokab.service');
 const helper = require('./helper');
@@ -69,7 +70,9 @@ app.get('/**', (req, res) => {
 app.use(errorHandler);
 stokabService.getToken();
 
-app.listen(8080, () => {
+const server = app.listen(8080, () => {
   // eslint-disable-next-line no-console
   console.log('Connected & Listen to port 8080');
 });
+
+server.setTimeout(config.maxTimeOutMins * 60 * 1000)

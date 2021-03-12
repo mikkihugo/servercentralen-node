@@ -44,6 +44,7 @@ const config = {
   freezeTableName: true, // By default, sequelize will pluralize model names
   timestamps: true,
   modelPaths: [path.resolve(__dirname, '..', 'models', '!(index.*)')],
+  maxTimeOutMins: 10,
 };
 
 module.exports = config;
