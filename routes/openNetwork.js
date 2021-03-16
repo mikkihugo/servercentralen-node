@@ -54,7 +54,21 @@ const initializeOpenNetworkEndpoints = (app) => {
 
   app.get('/api/openNetwork/getAccessesByAddress', async (req, res, next) => {
     try {
-      const response = await openNetworkService.fetchAccessesByAddress(req);
+      const city = req.query.city;
+      const street = req.query.street;
+      const streetNumber = req.query.number;
+
+      const {
+        offset = 0, limit = 25,
+      } = req.query;
+
+      const response = await openNetworkService.fetchAccessesByAddress(
+        street,
+        streetNumber,
+        city,
+        offset,
+        limit
+      );
 
       if (response.status) {
         return next(response);

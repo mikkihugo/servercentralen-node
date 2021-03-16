@@ -119,26 +119,13 @@ module.exports = {
     }
   },
 
-  fetchAccessesByAddress: async (req) => {
+  fetchAccessesByAddress: async (street, streetNumber, city, offset = 0, limit = 25) => {
     try {
-      const city = req.query.city;
-      const street = req.query.street;
-      const streetNumber = req.query.number;
-
-      const {
-        offset = 0, limit = 25,
-      } = req.query;
-
       if (!city && !street && !streetNumber) {
         throw new InputError('Invalid request');
       }
 
       let queryCriteria = {};
-
-
-      if (city) {
-        queryCriteria.city = city
-      }
 
       if (street) {
         queryCriteria.streetName = street
@@ -146,6 +133,10 @@ module.exports = {
 
       if (streetNumber) {
         queryCriteria.streetNumber = streetNumber
+      }
+
+      if (city) {
+        queryCriteria.city = city
       }
 
       const query = {
