@@ -3,7 +3,7 @@ const initStokabRouter = require('./stokab');
 const initCategoryRouter = require('./category');
 const initPriceRouter = require('./price');
 const initializeOpenNetworkRouter = require('./openNetwork');
-const initializeValidAPIEndpointsRouter = require('./validAddress');
+const initializeValidAPIEndpointsRouter = require('./address');
 
 const initializeEndpoints = (app) => {
   initUserRouter(app);

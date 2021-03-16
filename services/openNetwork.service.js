@@ -1,6 +1,5 @@
 require('dotenv').config();
 const axios = require('axios');
-const Sequelize = require('sequelize');
 
 const logger = require('../helper/logger');
 const InputError = require('../helper/input-error');
