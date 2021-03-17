@@ -56,7 +56,8 @@ const initializeValidAPIEndpoints = (app) => {
       const sollentunaPrice = await NetworkPrice.findAll({
         where: {
           network: 'SOLLENTUNA',
-        }
+        },
+        order: [['speed', 'asc']],
       })
 
       price.sollentuna = {
